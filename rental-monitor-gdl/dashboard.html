@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitor de Renta – Guadalajara</title>
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --bg: #f5f5f5;
+      --surface: #ffffff;
+      --surface-2: #f0f0f0;
+      --border: #e0e0e0;
+      --text: #1a1a1a;
+      --text-muted: #666;
+      --primary: #1565c0;
+      --primary-light: #e3f2fd;
+      --accent: #e65100;
+      --success: #2e7d32;
+      --warning: #e65100;
+      --danger: #b71c1c;
+      --neutral: #546e7a;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,.12);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.1);
+    }
+    [data-theme="dark"] {
+      --bg: #121212;
+      --surface: #1e1e1e;
+      --surface-2: #2a2a2a;
+      --border: #333;
+      --text: #e8e8e8;
+      --text-muted: #999;
+      --primary: #90caf9;
+      --primary-light: #1a2740;
+      --success: #81c784;
+      --warning: #ffb74d;
+      --danger: #ef9a9a;
+      --neutral: #90a4ae;
+    }
+
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button { cursor: pointer; font: inherit; }
+
+    /* ── Layout ── */
+    .app { max-width: 1400px; margin: 0 auto; padding: 0 1rem; }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .header-title { font-size: 1.2rem; font-weight: 700; color: var(--text); }
+    .header-meta { font-size: .8rem; color: var(--text-muted); }
+
+    .theme-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .35rem .8rem;
+      font-size: .85rem;
+      color: var(--text);
+      transition: background .15s;
+    }
+    .theme-btn:hover { background: var(--border); }
+
+    /* ── Filters bar ── */
+    .filters-wrap {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      margin: 1.25rem 0 1rem;
+    }
+    .filters-title {
+      font-size: .8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--text-muted);
+      margin-bottom: .75rem;
+    }
+    .filters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: .6rem;
+    }
+    .filter-group { display: flex; flex-direction: column; gap: .25rem; }
+    .filter-group label { font-size: .78rem; color: var(--text-muted); font-weight: 600; }
+    .filter-group input,
+    .filter-group select {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .42rem .6rem;
+      font-size: .88rem;
+      color: var(--text);
+      width: 100%;
+      outline: none;
+    }
+    .filter-group input:focus,
+    .filter-group select:focus { border-color: var(--primary); }
+    .search-group { grid-column: 1 / -1; }
+    .search-group input { font-size: .95rem; padding: .55rem .8rem; }
+
+    .filters-actions {
+      margin-top: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .btn-clear {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .38rem .85rem;
+      font-size: .85rem;
+      color: var(--text-muted);
+    }
+    .btn-clear:hover { border-color: var(--danger); color: var(--danger); }
+    #results-count { font-size: .85rem; color: var(--text-muted); }
+
+    /* ── Sort bar ── */
+    .sort-bar {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: .75rem;
+    }
+    .sort-bar span { font-size: .82rem; color: var(--text-muted); }
+    .sort-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .3rem .7rem;
+      font-size: .82rem;
+      color: var(--text);
+    }
+    .sort-btn.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); font-weight: 600; }
+    .sort-btn:hover:not(.active) { background: var(--border); }
+
+    /* ── Table ── */
+    .table-wrap {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+    thead th {
+      background: var(--surface-2);
+      padding: .65rem .75rem;
+      text-align: left;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--primary-light); }
+    td { padding: .6rem .75rem; vertical-align: top; }
+    .td-titulo { min-width: 220px; max-width: 280px; }
+    .titulo-text { font-weight: 600; line-height: 1.3; display: block; margin-bottom: .2rem; }
+    .titulo-sub { font-size: .78rem; color: var(--text-muted); }
+    .td-precio { white-space: nowrap; font-weight: 700; font-size: 1rem; }
+    .td-tipo { white-space: nowrap; }
+    .td-zona { min-width: 130px; }
+    .zona-name { font-weight: 600; }
+    .colonia-name { font-size: .78rem; color: var(--text-muted); }
+    .td-detalles { min-width: 140px; font-size: .8rem; color: var(--text-muted); }
+    .td-mascotas { white-space: nowrap; }
+    .td-requisitos { min-width: 220px; font-size: .8rem; }
+    .td-scores { white-space: nowrap; }
+    .td-link { white-space: nowrap; }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block;
+      border-radius: 4px;
+      padding: .18rem .55rem;
+      font-size: .72rem;
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1.4;
+    }
+    .badge-success { background: #e8f5e9; color: var(--success); }
+    .badge-danger  { background: #ffebee; color: var(--danger); }
+    .badge-warning { background: #fff3e0; color: var(--warning); }
+    .badge-neutral { background: #eceff1; color: var(--neutral); }
+    [data-theme="dark"] .badge-success { background: #1b3a1d; }
+    [data-theme="dark"] .badge-danger  { background: #3b1010; }
+    [data-theme="dark"] .badge-warning { background: #3b2010; }
+    [data-theme="dark"] .badge-neutral { background: #263238; }
+
+    .score-bar {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .score-pill {
+      display: inline-block;
+      border-radius: 12px;
+      padding: .15rem .55rem;
+      font-size: .75rem;
+      font-weight: 700;
+      min-width: 34px;
+      text-align: center;
+    }
+    .score-high   { background: #e8f5e9; color: var(--success); }
+    .score-medium { background: #fff8e1; color: #f57f17; }
+    .score-low    { background: #ffebee; color: var(--danger); }
+    [data-theme="dark"] .score-high   { background: #1b3a1d; }
+    [data-theme="dark"] .score-medium { background: #3b3010; }
+    [data-theme="dark"] .score-low    { background: #3b1010; }
+
+    .req-row { display: flex; flex-wrap: wrap; gap: .2rem; margin-top: .2rem; }
+
+    /* ── Empty / error state ── */
+    .state-box {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+    .state-box .state-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .state-box h2 { font-size: 1.2rem; margin-bottom: .5rem; color: var(--text); }
+    .state-box p { font-size: .9rem; max-width: 400px; margin: 0 auto; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      table { font-size: .8rem; }
+      td, th { padding: .5rem .5rem; }
+      .td-titulo { min-width: 160px; }
+      .header-title { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="header-title">🏠 Monitor de Renta — Guadalajara</div>
+      <div class="header-meta" id="last-updated">Cargando...</div>
+    </div>
+    <button class="theme-btn" id="theme-toggle" aria-label="Cambiar tema">🌙 Oscuro</button>
+  </div>
+</header>
+
+<div class="app">
+  <div class="filters-wrap">
+    <div class="filters-title">Filtros</div>
+    <div class="filters-grid">
+      <div class="filter-group search-group">
+        <label for="search">Búsqueda de texto</label>
+        <input type="text" id="search" placeholder="Título, colonia, descripción…" />
+      </div>
+      <div class="filter-group">
+        <label for="f-precio-max">Precio máximo (MXN)</label>
+        <input type="number" id="f-precio-max" placeholder="Ej: 15000" min="0" step="500" />
+      </div>
+      <div class="filter-group">
+        <label for="f-tipo">Tipo</label>
+        <select id="f-tipo"><option value="">Todos</option></select>
+      </div>
+      <div class="filter-group">
+        <label for="f-zona">Zona</label>
+        <select id="f-zona"><option value="">Todas</option></select>
+      </div>
+      <div class="filter-group">
+        <label for="f-colonia">Colonia</label>
+        <select id="f-colonia"><option value="">Todas</option></select>
+      </div>
+      <div class="filter-group">
+        <label for="f-recamaras">Recámaras mínimas</label>
+        <select id="f-recamaras">
+          <option value="">Cualquiera</option>
+          <option value="1">1+</option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="f-mascotas">Mascotas</label>
+        <select id="f-mascotas">
+          <option value="">Cualquiera</option>
+          <option value="Si acepta mascotas">Sí acepta</option>
+          <option value="Acepta mascotas con restricciones">Con restricciones</option>
+          <option value="No acepta mascotas">No acepta</option>
+          <option value="No especificado">No especificado</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="f-aval">Requiere aval</label>
+        <select id="f-aval">
+          <option value="">Cualquiera</option>
+          <option value="Si">Sí</option>
+          <option value="No">No</option>
+          <option value="No especificado">No especificado</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="f-justicia">Justicia alternativa</label>
+        <select id="f-justicia">
+          <option value="">Cualquiera</option>
+          <option value="Si">Sí</option>
+          <option value="No">No</option>
+          <option value="No especificado">No especificado</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="f-score-min">Score mínimo</label>
+        <input type="number" id="f-score-min" placeholder="0–100" min="0" max="100" />
+      </div>
+    </div>
+    <div class="filters-actions">
+      <button class="btn-clear" id="btn-clear">✕ Limpiar filtros</button>
+      <span id="results-count"></span>
+    </div>
+  </div>
+
+  <div class="sort-bar">
+    <span>Ordenar por:</span>
+    <button class="sort-btn" data-sort="precio_mensual" data-dir="asc">Precio ↑</button>
+    <button class="sort-btn" data-sort="precio_mensual" data-dir="desc">Precio ↓</button>
+    <button class="sort-btn" data-sort="score_calidad" data-dir="desc">Score ↓</button>
+    <button class="sort-btn" data-sort="recamaras" data-dir="desc">Recámaras ↓</button>
+    <button class="sort-btn" data-sort="prioridad_zona" data-dir="desc">Prioridad ↓</button>
+    <button class="sort-btn" data-sort="fecha_publicacion" data-dir="desc">Fecha ↓</button>
+  </div>
+
+  <div class="table-wrap" id="table-wrap">
+    <div class="state-box" id="loading-state">
+      <div class="state-icon">⏳</div>
+      <h2>Cargando anuncios…</h2>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let ALL_LISTINGS = [];
+let filtered = [];
+let sortKey = 'precio_mensual';
+let sortDir = 'asc';
+
+const filters = {
+  search: '',
+  precio_max: null,
+  tipo: '',
+  zona: '',
+  colonia: '',
+  recamaras: null,
+  mascotas: '',
+  aval: '',
+  justicia: '',
+  score_min: null,
+};
+
+// ── Theme ──────────────────────────────────────────────────────────────────
+const themeBtn = document.getElementById('theme-toggle');
+let dark = localStorage.getItem('theme') === 'dark';
+applyTheme();
+
+themeBtn.addEventListener('click', () => {
+  dark = !dark;
+  localStorage.setItem('theme', dark ? 'dark' : 'light');
+  applyTheme();
+});
+
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeBtn.textContent = dark ? '☀️ Claro' : '🌙 Oscuro';
+}
+
+// ── Data loading ───────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const [listingsRes, metaRes] = await Promise.allSettled([
+      fetch('data/listings.json'),
+      fetch('data/metadata.json'),
+    ]);
+
+    if (metaRes.status === 'fulfilled' && metaRes.value.ok) {
+      const meta = await metaRes.value.json();
+      renderMeta(meta);
+    }
+
+    if (listingsRes.status === 'fulfilled' && listingsRes.value.ok) {
+      ALL_LISTINGS = await listingsRes.value.json();
+    } else {
+      ALL_LISTINGS = [];
+    }
+
+    populateFilters();
+    applyFiltersAndSort();
+  } catch (err) {
+    showError('No se pudo cargar listings.json. ' + err.message);
+  }
+}
+
+function renderMeta(meta) {
+  const dt = meta.fecha_actualizacion
+    ? new Date(meta.fecha_actualizacion).toLocaleString('es-MX', {
+        dateStyle: 'medium', timeStyle: 'short',
+      })
+    : 'Desconocida';
+  document.getElementById('last-updated').textContent =
+    `Actualizado: ${dt} · ${meta.total_anuncios ?? 0} anuncios · Zona: ${meta.zona_objetivo ?? ''} · Precio máx: $${(meta.precio_maximo ?? 0).toLocaleString()}`;
+}
+
+// ── Populate select filters ────────────────────────────────────────────────
+function populateFilters() {
+  populate('f-tipo', [...new Set(ALL_LISTINGS.map(l => l.tipo).filter(Boolean))].sort());
+  populate('f-zona', [...new Set(ALL_LISTINGS.map(l => l.zona).filter(Boolean))].sort());
+  populate('f-colonia', [...new Set(ALL_LISTINGS.map(l => l.colonia).filter(Boolean))].sort());
+}
+
+function populate(id, values) {
+  const sel = document.getElementById(id);
+  const prev = sel.value;
+  sel.innerHTML = '<option value="">Todos</option>';
+  values.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = v;
+    sel.appendChild(opt);
+  });
+  sel.value = prev;
+}
+
+// ── Filter & Sort ──────────────────────────────────────────────────────────
+function applyFiltersAndSort() {
+  const searchLower = filters.search.toLowerCase();
+
+  filtered = ALL_LISTINGS.filter(l => {
+    if (filters.search) {
+      const hay = [l.titulo, l.colonia, l.zona, l.descripcion_corta, l.descripcion_original]
+        .join(' ').toLowerCase();
+      if (!hay.includes(searchLower)) return false;
+    }
+    if (filters.precio_max != null && l.precio_mensual != null && l.precio_mensual > filters.precio_max) return false;
+    if (filters.tipo && l.tipo !== filters.tipo) return false;
+    if (filters.zona && l.zona !== filters.zona) return false;
+    if (filters.colonia && l.colonia !== filters.colonia) return false;
+    if (filters.recamaras != null && (l.recamaras == null || l.recamaras < filters.recamaras)) return false;
+    if (filters.mascotas) {
+      const norm = normalizeFilterValue(l.mascotas || '');
+      if (norm !== filters.mascotas) return false;
+    }
+    if (filters.aval) {
+      const norm = normalizeFilterValue(l.requiere_aval || '');
+      if (norm !== filters.aval) return false;
+    }
+    if (filters.justicia) {
+      const norm = normalizeFilterValue(l.justicia_alternativa || '');
+      if (norm !== filters.justicia) return false;
+    }
+    if (filters.score_min != null && l.score_calidad < filters.score_min) return false;
+    return true;
+  });
+
+  // Sort
+  filtered.sort((a, b) => {
+    let va = a[sortKey];
+    let vb = b[sortKey];
+    if (va == null) va = sortDir === 'asc' ? Infinity : -Infinity;
+    if (vb == null) vb = sortDir === 'asc' ? Infinity : -Infinity;
+    if (typeof va === 'string') va = va.toLowerCase();
+    if (typeof vb === 'string') vb = vb.toLowerCase();
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  renderTable();
+  updateCount();
+}
+
+function normalizeFilterValue(v) {
+  return v.replace('Sí', 'Si').replace('é', 'e');
+}
+
+// ── Render table ───────────────────────────────────────────────────────────
+function renderTable() {
+  const wrap = document.getElementById('table-wrap');
+
+  if (ALL_LISTINGS.length === 0) {
+    wrap.innerHTML = emptyState(
+      '📋',
+      'Sin anuncios disponibles',
+      'Ejecuta collector.py para poblar listings.json, o espera la actualización automática.',
+    );
+    return;
+  }
+
+  if (filtered.length === 0) {
+    wrap.innerHTML = emptyState(
+      '🔍',
+      'Sin resultados',
+      'Prueba ajustar los filtros o el precio máximo.',
+    );
+    return;
+  }
+
+  const rows = filtered.map(l => `
+    <tr>
+      <td class="td-titulo">
+        <a class="titulo-text" href="${escHtml(l.url || '#')}" target="_blank" rel="noopener">
+          ${escHtml(l.titulo || 'Sin título')}
+        </a>
+        <span class="titulo-sub">${escHtml(l.descripcion_corta || '')}</span>
+      </td>
+      <td class="td-precio">${formatPrice(l.precio_mensual, l.moneda)}</td>
+      <td class="td-tipo">${escHtml(l.tipo || '—')}</td>
+      <td class="td-zona">
+        <div class="zona-name">${escHtml(l.zona || '—')}</div>
+        <div class="colonia-name">${escHtml(l.colonia || '')}</div>
+      </td>
+      <td class="td-detalles">
+        ${l.recamaras != null ? `<span>🛏 ${l.recamaras} rec.</span>` : ''}
+        ${l.banos != null ? ` · 🚿 ${l.banos}` : ''}
+        ${l.metros_cuadrados != null ? ` · 📐 ${l.metros_cuadrados}m²` : ''}
+      </td>
+      <td class="td-mascotas">${petsBadge(l.mascotas)}</td>
+      <td class="td-requisitos">
+        <div class="req-row">
+          ${avalBadge(l.requiere_aval)}
+          ${justiciaBadge(l.justicia_alternativa)}
+          ${depositoBadge(l.requiere_deposito)}
+          ${polizaBadge(l.requiere_poliza_juridica)}
+        </div>
+        <div style="margin-top:.3rem;font-size:.75rem;color:var(--text-muted)">
+          ${escHtml(l.detalle_requisitos || '')}
+        </div>
+      </td>
+      <td class="td-scores">
+        <div class="score-bar" title="Score calidad / confianza">
+          ${scorePill(l.score_calidad, 'Q')}
+          ${scorePill(l.score_confianza_extraccion, 'C')}
+        </div>
+      </td>
+      <td class="td-link">
+        <a href="${escHtml(l.url || '#')}" target="_blank" rel="noopener"
+           title="${escHtml(l.fuente || '')} · ${escHtml(l.fecha_publicacion || '')}">
+          Ver ↗
+        </a>
+      </td>
+    </tr>
+  `).join('');
+
+  wrap.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Anuncio</th>
+          <th>Precio/mes</th>
+          <th>Tipo</th>
+          <th>Zona / Colonia</th>
+          <th>Detalles</th>
+          <th>Mascotas</th>
+          <th>Requisitos</th>
+          <th>Score</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+// ── Badge helpers ──────────────────────────────────────────────────────────
+function petsBadge(val) {
+  if (!val || val === 'No especificado') return badge('neutral', '❓ N/E');
+  if (val === 'Sí acepta mascotas') return badge('success', '🐾 Acepta');
+  if (val === 'No acepta mascotas') return badge('danger', '🚫 No acepta');
+  return badge('warning', '⚠️ Restricción');
+}
+function avalBadge(val) {
+  if (!val || val === 'No especificado') return '';
+  if (val === 'Sí') return badge('warning', '📄 Aval');
+  if (val === 'No') return badge('success', '✓ Sin aval');
+  return '';
+}
+function justiciaBadge(val) {
+  if (!val || val === 'No especificado') return '';
+  if (val === 'Sí') return badge('success', '⚖️ J. Alt.');
+  return '';
+}
+function depositoBadge(val) {
+  if (!val || val === 'No especificado') return '';
+  if (val === 'Sí') return badge('neutral', '💰 Depósito');
+  return '';
+}
+function polizaBadge(val) {
+  if (!val || val === 'No especificado') return '';
+  if (val === 'Sí') return badge('neutral', '📋 Póliza');
+  return '';
+}
+function badge(type, text) {
+  return `<span class="badge badge-${type}">${text}</span>`;
+}
+function scorePill(val, label) {
+  if (val == null) return '';
+  const cls = val >= 70 ? 'score-high' : val >= 40 ? 'score-medium' : 'score-low';
+  return `<span class="score-pill ${cls}" title="${label}: ${val}/100">${val}</span>`;
+}
+
+// ── Utilities ─────────────────────────────────────────────────────────────
+function formatPrice(price, moneda) {
+  if (price == null) return '<span style="color:var(--text-muted)">A convenir</span>';
+  return `$${price.toLocaleString('es-MX')} <small style="color:var(--text-muted)">${moneda || 'MXN'}</small>`;
+}
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+function emptyState(icon, title, msg) {
+  return `<div class="state-box"><div class="state-icon">${icon}</div><h2>${title}</h2><p>${msg}</p></div>`;
+}
+function showError(msg) {
+  document.getElementById('table-wrap').innerHTML = emptyState('❌', 'Error al cargar', msg);
+}
+function updateCount() {
+  document.getElementById('results-count').textContent =
+    `${filtered.length} de ${ALL_LISTINGS.length} anuncio${ALL_LISTINGS.length !== 1 ? 's' : ''}`;
+}
+
+// ── Event wiring ───────────────────────────────────────────────────────────
+document.getElementById('search').addEventListener('input', e => {
+  filters.search = e.target.value;
+  applyFiltersAndSort();
+});
+document.getElementById('f-precio-max').addEventListener('input', e => {
+  filters.precio_max = e.target.value ? Number(e.target.value) : null;
+  applyFiltersAndSort();
+});
+document.getElementById('f-tipo').addEventListener('change', e => {
+  filters.tipo = e.target.value;
+  applyFiltersAndSort();
+});
+document.getElementById('f-zona').addEventListener('change', e => {
+  filters.zona = e.target.value;
+  applyFiltersAndSort();
+});
+document.getElementById('f-colonia').addEventListener('change', e => {
+  filters.colonia = e.target.value;
+  applyFiltersAndSort();
+});
+document.getElementById('f-recamaras').addEventListener('change', e => {
+  filters.recamaras = e.target.value ? Number(e.target.value) : null;
+  applyFiltersAndSort();
+});
+document.getElementById('f-mascotas').addEventListener('change', e => {
+  filters.mascotas = e.target.value;
+  applyFiltersAndSort();
+});
+document.getElementById('f-aval').addEventListener('change', e => {
+  filters.aval = e.target.value;
+  applyFiltersAndSort();
+});
+document.getElementById('f-justicia').addEventListener('change', e => {
+  filters.justicia = e.target.value;
+  applyFiltersAndSort();
+});
+document.getElementById('f-score-min').addEventListener('input', e => {
+  filters.score_min = e.target.value ? Number(e.target.value) : null;
+  applyFiltersAndSort();
+});
+
+document.getElementById('btn-clear').addEventListener('click', () => {
+  Object.keys(filters).forEach(k => {
+    filters[k] = typeof filters[k] === 'string' ? '' : null;
+  });
+  document.getElementById('search').value = '';
+  document.getElementById('f-precio-max').value = '';
+  document.getElementById('f-tipo').value = '';
+  document.getElementById('f-zona').value = '';
+  document.getElementById('f-colonia').value = '';
+  document.getElementById('f-recamaras').value = '';
+  document.getElementById('f-mascotas').value = '';
+  document.getElementById('f-aval').value = '';
+  document.getElementById('f-justicia').value = '';
+  document.getElementById('f-score-min').value = '';
+  applyFiltersAndSort();
+});
+
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    sortKey = btn.dataset.sort;
+    sortDir = btn.dataset.dir;
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFiltersAndSort();
+  });
+});
+
+// Activate default sort button
+document.querySelector('[data-sort="precio_mensual"][data-dir="asc"]').classList.add('active');
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
