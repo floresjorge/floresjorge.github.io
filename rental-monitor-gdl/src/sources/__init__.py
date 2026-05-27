@@ -1,9 +1,15 @@
 from .demo_source import DemoSource
 from .inmuebles24_stub import Inmuebles24Stub
+from .vivanuncios_stub import VivanunciosStub
+from .lamudi_stub import LamudiStub
+from .manual_feed import ManualFeedSource
 
 ALL_SOURCES = {
     "demo": DemoSource,
+    "manual": ManualFeedSource,
     "inmuebles24": Inmuebles24Stub,
+    "vivanuncios": VivanunciosStub,
+    "lamudi": LamudiStub,
 }
 
 
