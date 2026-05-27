@@ -23,6 +23,7 @@ from src.sources import get_sources
 from src.deduplicator import deduplicate
 from src.scorer import score_listings
 from src.exporter import export_listings
+from src.parsers import geocode_listing
 
 logging.basicConfig(
     level=logging.INFO,
@@ -109,6 +110,13 @@ def main() -> int:
     deduped, removed = deduplicate(all_listings)
     if removed:
         logger.info("Removed %d duplicate(s)", removed)
+
+    # Geocoding (colonia → lat/lng, no API)
+    for listing in deduped:
+        if listing.get("lat") is None:
+            coords = geocode_listing(listing.get("colonia"), listing.get("zona"))
+            if coords:
+                listing["lat"], listing["lng"] = coords
 
     # Scoring
     scored = score_listings(deduped)

@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 _CSV_FIELDS = [
     "id", "titulo", "tipo", "zona", "colonia", "municipio",
     "precio_mensual", "moneda", "recamaras", "banos", "estacionamientos",
-    "metros_cuadrados", "mascotas", "requiere_aval", "justicia_alternativa",
+    "metros_cuadrados", "lat", "lng",
+    "mascotas", "requiere_aval", "justicia_alternativa",
     "requiere_deposito", "requiere_poliza_juridica", "requiere_investigacion",
     "requiere_comprobantes_ingresos", "score_calidad", "score_confianza_extraccion",
     "prioridad_zona", "fuente", "fecha_publicacion", "fecha_extraccion",
@@ -33,6 +34,10 @@ def export_listings(
     warnings: list[str],
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    # --- price_history.json ---
+    from .price_history import update_price_history
+    update_price_history(listings, output_dir / "price_history.json")
 
     # --- listings.json ---
     listings_path = output_dir / "listings.json"
