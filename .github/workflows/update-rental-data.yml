@@ -48,7 +48,7 @@ jobs:
           python collector.py \
             --zona "${{ github.event.inputs.zona || 'Guadalajara Centro' }}" \
             --precio-max ${{ github.event.inputs.precio_max || '20000' }} \
-            --sources demo
+            --sources demo manual
 
       - name: Check for changes
         id: changes
