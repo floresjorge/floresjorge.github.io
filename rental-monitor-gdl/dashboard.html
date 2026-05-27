@@ -242,6 +242,12 @@
       transition: opacity .15s;
     }
     .btn-ver:hover { opacity: .85; text-decoration: none; }
+    .btn-ver-demo {
+      font-size: .78rem; font-weight: 600; padding: .3rem .75rem;
+      background: var(--surface-2); color: var(--text-muted);
+      border-radius: 6px; border: 1px solid var(--border);
+      cursor: default;
+    }
 
     /* ── Map view ── */
     #view-map { display: none; border-radius: var(--radius); overflow: hidden;
@@ -552,9 +558,14 @@ function renderCards() {
   wrap.innerHTML = S.filtered.map(cardHtml).join('');
 }
 
+function isDemo(l) {
+  return l.fuente === 'demo' || (l.url || '').includes('demo.example.com');
+}
+
 function cardHtml(l) {
   const tipoClass = l.tipo === 'Casa' ? 'tipo-casa' : l.tipo === 'Departamento' ? 'tipo-depto' : 'tipo-otro';
   const scoreClass = l.score_calidad >= 70 ? 'score-hi' : l.score_calidad >= 40 ? 'score-md' : 'score-lo';
+  const demo = isDemo(l);
 
   const priceStr = l.precio_mensual != null
     ? `<span class="card-price">$${l.precio_mensual.toLocaleString('es-MX')}</span><span class="price-currency"> MXN/mes</span>`
@@ -586,7 +597,10 @@ function cardHtml(l) {
       <span class="card-tipo ${tipoClass}">${esc(l.tipo || '—')}</span>
       <span class="card-score ${scoreClass}" title="Score calidad: ${l.score_calidad}/100">Q:${l.score_calidad}</span>
     </div>
-    <h3 class="card-title"><a href="${esc(l.url || '#')}" target="_blank" rel="noopener">${esc(l.titulo || 'Sin título')}</a></h3>
+    <h3 class="card-title">${demo
+      ? esc(l.titulo || 'Sin título')
+      : `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.titulo || 'Sin título')}</a>`
+    }</h3>
     <div class="card-price-row">
       ${priceStr}
       ${trend ? `<span class="${trend.cls}">${trend.text}</span>` : ''}
@@ -600,7 +614,10 @@ function cardHtml(l) {
     ${badges ? `<div class="card-badges">${badges}</div>` : ''}
     <div class="card-footer">
       <span class="card-date">${dateStr}</span>
-      <a class="btn-ver" href="${esc(l.url || '#')}" target="_blank" rel="noopener">Ver ↗</a>
+      ${demo
+        ? `<span class="btn-ver-demo" title="Anuncio de demostración — sin URL real">Demo</span>`
+        : `<a class="btn-ver" href="${esc(l.url)}" target="_blank" rel="noopener">Ver ↗</a>`
+      }
     </div>
   </article>`;
 }
@@ -729,7 +746,10 @@ function renderMap() {
       <div class="popup-meta">${esc(l.tipo || '')} · ${esc(l.colonia || l.zona || '')}</div>
       <div class="popup-meta">${[l.recamaras ? '🛏 '+l.recamaras+' rec.' : '', l.banos ? '🚿 '+l.banos : '', l.metros_cuadrados ? '📐 '+l.metros_cuadrados+'m²' : ''].filter(Boolean).join(' · ')}</div>
       <div class="popup-badges">${petsBadge(l.mascotas)}${avalBadge(l.requiere_aval)}${jaBadge(l.justicia_alternativa)}</div>
-      <a class="popup-link" href="${esc(l.url || '#')}" target="_blank" rel="noopener">Ver anuncio ↗</a>
+      ${isDemo(l)
+        ? `<span style="font-size:.78rem;color:#999">Anuncio de demostración</span>`
+        : `<a class="popup-link" href="${esc(l.url)}" target="_blank" rel="noopener">Ver anuncio ↗</a>`
+      }
     </div>`;
 
     L.marker([l.lat, l.lng], { icon }).bindPopup(popup).addTo(_markerLayer);
