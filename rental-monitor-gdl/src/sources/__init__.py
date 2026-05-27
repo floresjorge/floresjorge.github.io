@@ -3,10 +3,12 @@ from .inmuebles24_stub import Inmuebles24Stub
 from .vivanuncios_stub import VivanunciosStub
 from .lamudi_stub import LamudiStub
 from .manual_feed import ManualFeedSource
+from .mercadolibre import MercadoLibreSource
 
 ALL_SOURCES = {
     "demo": DemoSource,
     "manual": ManualFeedSource,
+    "mercadolibre": MercadoLibreSource,
     "inmuebles24": Inmuebles24Stub,
     "vivanuncios": VivanunciosStub,
     "lamudi": LamudiStub,
