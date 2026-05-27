@@ -33,6 +33,8 @@
     "requiere_comprobantes_ingresos": "No especificado",
     "detalle_requisitos": "Sin aval; Requiere/acepta justicia alternativa",
     "texto_requisitos_original": "Espacio de uso mixto en planta baja del Centro. 1 recámara al fondo, sala que puede ser estudio/recepción, pequeño baño. Ideal para profesionista o pequeño negocio. Sin aval, se acepta justicia alternativa. Sin información sobre mascotas.",
+    "lat": 20.6752,
+    "lng": -103.3483,
     "score_calidad": 90,
     "score_confianza_extraccion": 94
   },
@@ -70,6 +72,8 @@
     "requiere_comprobantes_ingresos": "No especificado",
     "detalle_requisitos": "Sin aval; Requiere/acepta justicia alternativa",
     "texto_requisitos_original": "Departamento económico a metros del Teatro Degollado. 1 recámara, 1 baño, sala-cocina integrada. Ideal para estudiante o profesionista. Sin estacionamiento, excelente acceso a transporte público. Sin aval, se acepta contrato de justicia alternativa. No mascotas.",
+    "lat": 20.6752,
+    "lng": -103.3483,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -107,6 +111,8 @@
     "requiere_comprobantes_ingresos": "No especificado",
     "detalle_requisitos": "Sin aval; Requiere/acepta justicia alternativa; Requiere depósito",
     "texto_requisitos_original": "Estudio moderno en Santa Tere, colonia con excelente ambiente. 1 recámara integrada, baño completo, cocina americana, balcón. A 5 min caminando del Mercado Alcalde. Pet friendly: se aceptan mascotas con autorización previa. Sin aval, se acepta justicia alternativa o depósito equivalente a 1 mes.",
+    "lat": 20.6758,
+    "lng": -103.3631,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -144,6 +150,8 @@
     "requiere_comprobantes_ingresos": "No especificado",
     "detalle_requisitos": "Requiere fiador; Depósito: 2 mes(es)",
     "texto_requisitos_original": "Casa económica en Las Conchas, buena ubicación. 2 recámaras, 1 baño, sala, comedor, cocina, cochera. Zona accesible, cerca de Periférico y mercados. Requisitos: fiador con propiedad o 2 meses de depósito. Mascotas: solo gatos, no perros.",
+    "lat": 20.6651,
+    "lng": -103.3551,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -181,6 +189,8 @@
     "requiere_comprobantes_ingresos": "No especificado",
     "detalle_requisitos": "Requiere aval; Depósito: 1 mes(es)",
     "texto_requisitos_original": "Casa sencilla en San Sebastianito, cerca del Centro. 2 recámaras, 1 baño, sala, cocina, patio grande. Buen acceso vial, zona tranquila. Requisitos: aval propietario, 1 mes de depósito. Se aceptan mascotas (perro o gato).",
+    "lat": 20.6713,
+    "lng": -103.3352,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -218,6 +228,8 @@
     "requiere_comprobantes_ingresos": "No especificado",
     "detalle_requisitos": "Sin aval; Requiere/acepta justicia alternativa; Depósito: 2 mes(es)",
     "texto_requisitos_original": "Departamento recién pintado y con muebles nuevos en Analco. 2 recámaras, 1 baño completo, sala, cocina con refrigerador. Estacionamiento propio. Edificio con portero. Sin aval: aceptamos justicia alternativa o 2 meses de depósito. Pet friendly hasta 2 mascotas (perro pequeño o gato).",
+    "lat": 20.6692,
+    "lng": -103.3391,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -255,6 +267,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Requiere póliza jurídica; Depósito: 1 mes(es); Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Departamento semi-amueblado en Artesanos. 2 recámaras, 1 baño con regadera, cocina con estufa y alacena. Edificio tranquilo, control de acceso. Requiere: aval o póliza jurídica, 1 mes de depósito, estados de cuenta bancarios. No se aceptan perros grandes. Gatos permitidos.",
+    "lat": 20.6921,
+    "lng": -103.3372,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -292,6 +306,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Requiere póliza jurídica; Depósito: 1 mes(es); Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Departamento luminoso en Analco, a pasos del Centro. 2 recámaras, 1 baño, cocina equipada con refrigerador y estufa. Edificio seguro con vigilancia. Se aceptan mascotas pequeñas (máximo 10 kg). Requisitos: aval o póliza jurídica, 1 mes de depósito, comprobante de ingresos mínimo 3 veces la renta.",
+    "lat": 20.6692,
+    "lng": -103.3391,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -329,6 +345,8 @@
     "requiere_comprobantes_ingresos": "No especificado",
     "detalle_requisitos": "Requiere aval; Requiere/acepta justicia alternativa; Depósito: 1 mes(es)",
     "texto_requisitos_original": "Hermosa casa de finales del siglo XIX restaurada en el Centro Histórico. 2 recámaras, 1 baño grande, sala, comedor, cocina amplia con tiro libre, patio central. Vigas de madera originales, pisos de talavera. Sin estacionamiento propio pero hay estacionamientos públicos a metros. Se aceptan mascotas: gatos y perros pequeños (menos de 5 kg). Requisitos: aval con propiedad o justicia alternativa, 1 mes de depósito.",
+    "lat": 20.6752,
+    "lng": -103.3483,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -366,6 +384,8 @@
     "requiere_comprobantes_ingresos": "No especificado",
     "detalle_requisitos": "Requiere fiador; Depósito: 2 mes(es)",
     "texto_requisitos_original": "Casa de dos plantas en Sagrada Familia. 3 recámaras, 2 baños, sala-comedor amplio, jardín y cochera. Zona residencial tranquila, cerca de escuelas y supermercados. Requisitos: fiador con propiedad en la ZMG, 2 meses de depósito. Mascotas: sujeto a autorización del arrendador.",
+    "lat": 20.6843,
+    "lng": -103.3512,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -403,6 +423,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Requiere obligado solidario; Depósito: 2 mes(es); Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Casa de estilo colonial en Colonia Morelos. 3 recámaras, 2 baños, sala amplia, comedor, cocina grande con estufa. Patio central y estacionamiento. Techos altos y pisos de mosaico original. Requisitos: obligado solidario o aval con propiedad, 2 meses de depósito, comprobante de ingresos (3 veces la renta). Pet friendly: acepta mascotas pequeñas previo acuerdo.",
+    "lat": 20.6841,
+    "lng": -103.3402,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -440,6 +462,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Depósito: 2 mes(es); Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Hermosa casa colonial en el corazón del Centro Histórico. 3 recámaras amplias, 2 baños completos, sala, comedor, cocina integral equipada, pequeño jardín interior. Excelente iluminación natural. Requisitos: 2 meses de depósito, aval propietario, comprobante de ingresos. No se aceptan mascotas.",
+    "lat": 20.6752,
+    "lng": -103.3483,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -477,6 +501,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Depósito: 2 mes(es); Requiere investigación socioeconómica; Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Casa señorial en Colonia Morelos con estudio y biblioteca. 3 recámaras suite, 3 baños, sala formal, sala de TV, comedor, estudio, biblioteca, jardín con fuente y 2 cocheras. Casa de dos plantas con techos de 4 metros. Requisitos: aval propietario, 2 meses de depósito, investigación socioeconómica, estados de cuenta. Mascotas: acepta gatos únicamente.",
+    "lat": 20.6841,
+    "lng": -103.3402,
     "score_calidad": 90,
     "score_confianza_extraccion": 94
   },
@@ -514,6 +540,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Depósito: 2 mes(es); Requiere investigación socioeconómica; Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Amplia casa en Mexicaltzingo, zona tranquila y segura. 4 recámaras, 2 baños completos, sala de TV, jardín grande y 2 cocheras. Ideal para familia. Requisitos: aval propietario en Guadalajara o Zapopan, 2 meses de depósito, investigación socioeconómica, comprobante de ingresos. No mascotas por favor.",
+    "lat": 20.6611,
+    "lng": -103.3473,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -551,6 +579,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Requiere póliza jurídica; Depósito: 2 mes(es); Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Penthouse en Santa Tere con roof garden privado y vista 360°. 3 recámaras, 2 baños, sala amplia, comedor, cocina abierta equipada. Roof garden con asador y área lounge exclusivos para el piso. Pet friendly: mascotas bienvenidas con depósito reembolsable. Requisitos: póliza jurídica o aval propietario, 2 meses de depósito, comprobante de ingresos.",
+    "lat": 20.6758,
+    "lng": -103.3631,
     "score_calidad": 95,
     "score_confianza_extraccion": 100
   },
@@ -588,6 +618,8 @@
     "requiere_comprobantes_ingresos": "No especificado",
     "detalle_requisitos": "Sin información de requisitos",
     "texto_requisitos_original": "Casa antigua en el Centro, llame para más información. 3 recámaras, amplio. Precio a convenir.",
+    "lat": 20.6752,
+    "lng": -103.3483,
     "score_calidad": 53,
     "score_confianza_extraccion": 74
   },
@@ -625,6 +657,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Requiere póliza jurídica; Depósito: 3 mes(es); Requiere investigación socioeconómica; Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Loft de lujo en La Americana con terraza privada. 3 recámaras, 2 baños, sala doble altura, cocina gourmet, terraza con jacuzzi. Edificio boutique, solo 6 unidades. Seguridad biométrica. Acepta mascotas con restricciones (raza no peligrosa, máximo 2). Requisitos: aval propietario o póliza jurídica, 3 meses de depósito, investigación de crédito, estados de cuenta últimos 6 meses.",
+    "lat": 20.6812,
+    "lng": -103.3741,
     "score_calidad": 85,
     "score_confianza_extraccion": 100
   },
@@ -662,6 +696,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Depósito: 3 mes(es); Requiere investigación socioeconómica; Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Elegante casa en La Americana, una de las colonias más cotizadas de GDL. 4 recámaras con closet, 3 baños completos, sala de TV, estudio, jardín trasero. Cocina integral con isla. Seguridad 24/7. Requisitos: aval propietario zona metropolitana, 3 meses de depósito, investigación socioeconómica, comprobantes de ingresos. No se aceptan mascotas.",
+    "lat": 20.6812,
+    "lng": -103.3741,
     "score_calidad": 85,
     "score_confianza_extraccion": 100
   },
@@ -699,6 +735,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Requiere póliza jurídica; Depósito: 2 mes(es); Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Moderno departamento en Providencia, piso 8 con vista a la ciudad. 2 recámaras, 2 baños, sala amplia, cocina abierta, terraza. Amenidades: gimnasio, área de asados, seguridad. Pet friendly (mascotas pequeñas hasta 8 kg). Requisitos: aval o póliza jurídica, 2 meses de depósito, comprobante de ingresos, referencias personales.",
+    "lat": 20.6922,
+    "lng": -103.3891,
     "score_calidad": 85,
     "score_confianza_extraccion": 100
   },
@@ -736,6 +774,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Depósito: 2 mes(es); Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Departamento seguro en Zapopan Norte. 2 recámaras, 1 baño, sala-comedor, cocina con alacena. Estacionamiento incluido. Zona tranquila, buenas escuelas cercanas. Requiere: aval o 2 meses de depósito, recibo de nómina. Mascotas no permitidas.",
+    "lat": 20.7381,
+    "lng": -103.3872,
     "score_calidad": 85,
     "score_confianza_extraccion": 100
   },
@@ -773,6 +813,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere aval; Requiere póliza jurídica; Depósito: 2 mes(es); Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Departamento nuevo en edificio a 5 min de Plaza Patria. 2 recámaras, 2 baños, sala comedor, cocina integral, balcón. Amenidades: gimnasio, área de asados, seguridad 24h. Acepta mascotas: perros y gatos (cualquier tamaño). Requisitos: 2 meses de depósito, comprobante de ingresos 3x la renta, aval o póliza jurídica.",
+    "lat": 20.7013,
+    "lng": -103.3722,
     "score_calidad": 85,
     "score_confianza_extraccion": 100
   },
@@ -810,6 +852,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Depósito: 2 mes(es); Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Departamento amueblado en Zapopan frente a parque. 2 recámaras, 2 baños, sala comedor, cocina equipada, balcón. Incluye: internet, mantenimiento. Edificio con vigilancia. Pet friendly: mascotas bienvenidas con depósito adicional. Requisitos: 2 meses de depósito, comprobante de ingresos, referencias.",
+    "lat": 20.7101,
+    "lng": -103.4313,
     "score_calidad": 85,
     "score_confianza_extraccion": 100
   },
@@ -847,6 +891,8 @@
     "requiere_comprobantes_ingresos": "Sí",
     "detalle_requisitos": "Requiere fiador; Depósito: 2 mes(es); Requiere comprobantes de ingresos",
     "texto_requisitos_original": "Casa completamente remodelada en Tlaquepaque. 3 recámaras, 2 baños, sala, comedor, cocina integral, jardín amplio. Instalaciones nuevas, pisos y pintura recientes. Requisitos: fiador o 2 meses de depósito, comprobante de ingresos. No se aceptan mascotas.",
+    "lat": 20.6413,
+    "lng": -103.3102,
     "score_calidad": 85,
     "score_confianza_extraccion": 100
   },
@@ -884,6 +930,8 @@
     "requiere_comprobantes_ingresos": "No especificado",
     "detalle_requisitos": "Requiere aval; Depósito: 2 mes(es)",
     "texto_requisitos_original": "Casa de dos plantas. 3 recámaras, 2 baños, patio grande. Requiere aval propietario y 2 meses de depósito. No mascotas.",
+    "lat": 20.6752,
+    "lng": -103.3483,
     "score_calidad": 95,
     "score_confianza_extraccion": 92
   }

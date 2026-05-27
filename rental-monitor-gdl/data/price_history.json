@@ -1,0 +1,232 @@
+{
+  "demo-3732c5d9": {
+    "titulo": "Local / Departamento Centro uso mixto 1 rec",
+    "url_canonica": "https://demo.example.com/listing/gdl-centro-021",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 5500
+      }
+    ]
+  },
+  "demo-f0de3476": {
+    "titulo": "Departamento Centro Histórico 1 rec económico cerca de plazas",
+    "url_canonica": "https://demo.example.com/listing/gdl-centro-011",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 6000
+      }
+    ]
+  },
+  "demo-f6c47bb4": {
+    "titulo": "Departamento Santa Teresa 1 rec estudio moderno",
+    "url_canonica": "https://demo.example.com/listing/gdl-santatere-004",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 7500
+      }
+    ]
+  },
+  "demo-443331cb": {
+    "titulo": "Casa en renta Col. Las Conchas GDL 2 rec económica",
+    "url_canonica": "https://demo.example.com/listing/gdl-lasconchas-023",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 7800
+      }
+    ]
+  },
+  "demo-da2c9b89": {
+    "titulo": "Casa San Sebastián 2 rec 1 baño patio amplio",
+    "url_canonica": "https://demo.example.com/listing/gdl-sansebastian-012",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 8000
+      }
+    ]
+  },
+  "demo-5ae450d2": {
+    "titulo": "Departamento renta Analco 2 rec recién pintado a precio justo",
+    "url_canonica": "https://demo.example.com/listing/gdl-analco-019",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 8200
+      }
+    ]
+  },
+  "demo-c7f1409d": {
+    "titulo": "Departamento en renta Col. Artesanos 2 rec amueblado",
+    "url_canonica": "https://demo.example.com/listing/gdl-artesanos-006",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 8500
+      }
+    ]
+  },
+  "demo-e060014c": {
+    "titulo": "Departamento en renta Colonia Analco, 2 recámaras, pet friendly",
+    "url_canonica": "https://demo.example.com/listing/gdl-analco-002",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 9800
+      }
+    ]
+  },
+  "demo-5cdc8a0e": {
+    "titulo": "Casa Centro Histórico 2 rec remodelada patio central",
+    "url_canonica": "https://demo.example.com/listing/gdl-centro-016",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 10500
+      }
+    ]
+  },
+  "demo-787a814e": {
+    "titulo": "Casa renta Sagrada Familia 3 recámaras con jardín y cochera",
+    "url_canonica": "https://demo.example.com/listing/gdl-sagradafamilia-005",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 11000
+      }
+    ]
+  },
+  "demo-fcbec57a": {
+    "titulo": "Casa histórica en renta Col. Morelos 3 rec amplio patio",
+    "url_canonica": "https://demo.example.com/listing/gdl-morelos-007",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 12000
+      }
+    ]
+  },
+  "demo-30582559": {
+    "titulo": "Casa en renta Centro Histórico, 3 rec, amplio jardín",
+    "url_canonica": "https://demo.example.com/listing/gdl-centro-001",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 13500
+      }
+    ]
+  },
+  "demo-6d63a2a6": {
+    "titulo": "Casa renta Col. Morelos GDL 3 rec con estudio y biblioteca",
+    "url_canonica": "https://demo.example.com/listing/gdl-morelos-018",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 14500
+      }
+    ]
+  },
+  "demo-013c4830": {
+    "titulo": "Casa renta Mexicaltzingo 4 recámaras 2 baños jardín cochera",
+    "url_canonica": "https://demo.example.com/listing/gdl-mexicaltzingo-003",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 15000
+      }
+    ]
+  },
+  "demo-86d2c984": {
+    "titulo": "Departamento Santa Tere 3 rec con roof garden exclusivo",
+    "url_canonica": "https://demo.example.com/listing/gdl-santatere-022",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 16500
+      }
+    ]
+  },
+  "demo-62fc2586": {
+    "titulo": "Departamento Col. Americana 3 rec loft amplio terraza",
+    "url_canonica": "https://demo.example.com/listing/gdl-americana-015",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 17000
+      }
+    ]
+  },
+  "demo-4a02ca9a": {
+    "titulo": "Casa en renta Americana 4 rec 3 baños amplio jardín",
+    "url_canonica": "https://demo.example.com/listing/gdl-americana-008",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 19500
+      }
+    ]
+  },
+  "demo-d01f9f7d": {
+    "titulo": "Departamento Providencia 2 rec vista panorámica",
+    "url_canonica": "https://demo.example.com/listing/gdl-providencia-009",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 14000
+      }
+    ]
+  },
+  "demo-2897da1b": {
+    "titulo": "Departamento Zapopan Norte 2 rec seguro económico",
+    "url_canonica": "https://demo.example.com/listing/zap-norte-017",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 7200
+      }
+    ]
+  },
+  "demo-9562064a": {
+    "titulo": "Departamento Zapopan cerca Plaza Patria 2 rec nuevo",
+    "url_canonica": "https://demo.example.com/listing/zap-atemajac-024",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 10200
+      }
+    ]
+  },
+  "demo-3a417927": {
+    "titulo": "Departamento Zapopan 2 rec frente a parque amueblado",
+    "url_canonica": "https://demo.example.com/listing/zap-ciudadgranja-013",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 11500
+      }
+    ]
+  },
+  "demo-0a2c5a87": {
+    "titulo": "Casa Tlaquepaque 3 rec remodelada jardín grande",
+    "url_canonica": "https://demo.example.com/listing/tlaq-vergel-014",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 9500
+      }
+    ]
+  },
+  "manual-0": {
+    "titulo": "Casa anuncio manual Col. Centro 3 rec con patio",
+    "url_canonica": "https://ejemplo.com/anuncio-manual-1",
+    "precios": [
+      {
+        "fecha": "2026-05-27",
+        "precio": 11000
+      }
+    ]
+  }
+}
