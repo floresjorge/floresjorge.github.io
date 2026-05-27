@@ -1,0 +1,13 @@
+{
+  "fecha_actualizacion": "2026-05-27T13:55:39.716724+00:00",
+  "total_anuncios": 23,
+  "anuncios_filtrados": 0,
+  "fuentes_utilizadas": [
+    "demo"
+  ],
+  "zona_objetivo": "Guadalajara Centro",
+  "precio_maximo": 20000,
+  "tiempo_ejecucion_segundos": 0.01,
+  "errores": [],
+  "advertencias": []
+}
