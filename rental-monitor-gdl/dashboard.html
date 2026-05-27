@@ -4,734 +4,832 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monitor de Renta – Guadalajara</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    /* ── Design tokens ── */
+    /* ── Tokens ── */
     :root {
-      --bg: #f5f5f5;
-      --surface: #ffffff;
-      --surface-2: #f0f0f0;
-      --border: #e0e0e0;
-      --text: #1a1a1a;
-      --text-muted: #666;
-      --primary: #1565c0;
-      --primary-light: #e3f2fd;
-      --accent: #e65100;
-      --success: #2e7d32;
-      --warning: #e65100;
-      --danger: #b71c1c;
-      --neutral: #546e7a;
-      --radius: 8px;
-      --shadow: 0 1px 3px rgba(0,0,0,.12);
-      --shadow-md: 0 4px 12px rgba(0,0,0,.1);
+      --bg:          #f4f5f7;
+      --surface:     #ffffff;
+      --surface-2:   #f0f1f3;
+      --border:      #e2e4e8;
+      --text:        #1a1d23;
+      --text-muted:  #6b7280;
+      --primary:     #1d4ed8;
+      --primary-bg:  #eff6ff;
+      --success:     #16a34a;
+      --success-bg:  #f0fdf4;
+      --warning:     #d97706;
+      --warning-bg:  #fffbeb;
+      --danger:      #dc2626;
+      --danger-bg:   #fef2f2;
+      --neutral-bg:  #f1f5f9;
+      --neutral:     #475569;
+      --radius:      10px;
+      --card-shadow: 0 1px 4px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.04);
+      --card-hover:  0 4px 16px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06);
     }
     [data-theme="dark"] {
-      --bg: #121212;
-      --surface: #1e1e1e;
-      --surface-2: #2a2a2a;
-      --border: #333;
-      --text: #e8e8e8;
-      --text-muted: #999;
-      --primary: #90caf9;
-      --primary-light: #1a2740;
-      --success: #81c784;
-      --warning: #ffb74d;
-      --danger: #ef9a9a;
-      --neutral: #90a4ae;
+      --bg:          #0f1117;
+      --surface:     #1a1d27;
+      --surface-2:   #22263a;
+      --border:      #2e3349;
+      --text:        #e8eaf0;
+      --text-muted:  #8892a4;
+      --primary:     #93c5fd;
+      --primary-bg:  #1e2d4a;
+      --success:     #4ade80;
+      --success-bg:  #0d2818;
+      --warning:     #fbbf24;
+      --warning-bg:  #2d1f06;
+      --danger:      #f87171;
+      --danger-bg:   #2d0c0c;
+      --neutral-bg:  #1e2433;
+      --neutral:     #94a3b8;
     }
 
-    /* ── Reset & base ── */
+    /* ── Reset ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 15px; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      min-height: 100vh;
-    }
+    html { font-size: 15px; scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+           background: var(--bg); color: var(--text); line-height: 1.5; }
     a { color: var(--primary); text-decoration: none; }
     a:hover { text-decoration: underline; }
-    button { cursor: pointer; font: inherit; }
+    button { cursor: pointer; font: inherit; border: none; background: none; }
 
-    /* ── Layout ── */
-    .app { max-width: 1400px; margin: 0 auto; padding: 0 1rem; }
-
+    /* ── Header ── */
     header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 1rem 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: var(--shadow);
+      position: sticky; top: 0; z-index: 200;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
     }
     .header-inner {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
+      max-width: 1400px; margin: 0 auto; padding: .75rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
     }
-    .header-title { font-size: 1.2rem; font-weight: 700; color: var(--text); }
-    .header-meta { font-size: .8rem; color: var(--text-muted); }
+    .header-brand h1 { font-size: 1.1rem; font-weight: 700; }
+    .header-brand p  { font-size: .75rem; color: var(--text-muted); margin-top: .1rem; }
+    .header-controls { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
 
-    .theme-btn {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: .35rem .8rem;
-      font-size: .85rem;
-      color: var(--text);
-      transition: background .15s;
+    .view-toggle {
+      display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
     }
-    .theme-btn:hover { background: var(--border); }
+    .view-btn {
+      padding: .38rem .85rem; font-size: .82rem; font-weight: 600;
+      background: var(--surface-2); color: var(--text-muted);
+      transition: background .15s, color .15s;
+    }
+    .view-btn.active { background: var(--primary); color: #fff; }
+    .view-btn:hover:not(.active) { background: var(--border); }
 
-    /* ── Filters bar ── */
+    .icon-btn {
+      padding: .38rem .75rem; font-size: .85rem; font-weight: 500;
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); transition: background .15s;
+    }
+    .icon-btn:hover { background: var(--border); }
+
+    /* ── App shell ── */
+    .app { max-width: 1400px; margin: 0 auto; padding: 1.25rem; }
+
+    /* ── Filters ── */
     .filters-wrap {
-      background: var(--surface);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 1rem;
-      margin: 1.25rem 0 1rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); margin-bottom: 1rem; overflow: hidden;
     }
-    .filters-title {
-      font-size: .8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--text-muted);
-      margin-bottom: .75rem;
+    .filters-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .7rem 1rem; cursor: pointer; user-select: none;
     }
+    .filters-header-left { display: flex; align-items: center; gap: .5rem; }
+    .filters-title { font-size: .82rem; font-weight: 700; text-transform: uppercase;
+                     letter-spacing: .06em; color: var(--text-muted); }
+    .filters-active-count {
+      background: var(--primary); color: #fff;
+      border-radius: 10px; padding: .1rem .45rem; font-size: .72rem; font-weight: 700;
+      display: none;
+    }
+    .filters-active-count.visible { display: inline; }
+    .filters-chevron { font-size: .75rem; color: var(--text-muted); transition: transform .2s; }
+    .filters-chevron.open { transform: rotate(180deg); }
+
+    .filters-body { padding: 0 1rem 1rem; display: none; }
+    .filters-body.open { display: block; }
     .filters-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: .6rem;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: .55rem;
     }
-    .filter-group { display: flex; flex-direction: column; gap: .25rem; }
-    .filter-group label { font-size: .78rem; color: var(--text-muted); font-weight: 600; }
-    .filter-group input,
-    .filter-group select {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: .42rem .6rem;
-      font-size: .88rem;
-      color: var(--text);
-      width: 100%;
-      outline: none;
+    .fg { display: flex; flex-direction: column; gap: .2rem; }
+    .fg label { font-size: .76rem; color: var(--text-muted); font-weight: 600; }
+    .fg input, .fg select {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 6px; padding: .4rem .6rem; font-size: .875rem; color: var(--text);
+      width: 100%; outline: none; transition: border-color .15s;
     }
-    .filter-group input:focus,
-    .filter-group select:focus { border-color: var(--primary); }
-    .search-group { grid-column: 1 / -1; }
-    .search-group input { font-size: .95rem; padding: .55rem .8rem; }
+    .fg input:focus, .fg select:focus { border-color: var(--primary); }
+    .fg-full { grid-column: 1 / -1; }
+    .fg-full input { font-size: .95rem; padding: .5rem .75rem; }
 
     .filters-actions {
-      margin-top: .75rem;
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      flex-wrap: wrap;
+      margin-top: .75rem; display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
     }
     .btn-clear {
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: .38rem .85rem;
-      font-size: .85rem;
-      color: var(--text-muted);
+      padding: .35rem .8rem; font-size: .82rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted);
+      background: var(--surface-2); transition: border-color .15s, color .15s;
     }
     .btn-clear:hover { border-color: var(--danger); color: var(--danger); }
-    #results-count { font-size: .85rem; color: var(--text-muted); }
+    #results-count { font-size: .82rem; color: var(--text-muted); }
 
-    /* ── Sort bar ── */
-    .sort-bar {
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      flex-wrap: wrap;
-      margin-bottom: .75rem;
+    /* ── Toolbar ── */
+    .toolbar {
+      display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin-bottom: .85rem;
     }
-    .sort-bar span { font-size: .82rem; color: var(--text-muted); }
+    .toolbar-label { font-size: .78rem; color: var(--text-muted); white-space: nowrap; }
     .sort-btn {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: .3rem .7rem;
-      font-size: .82rem;
-      color: var(--text);
+      padding: .28rem .65rem; font-size: .78rem; font-weight: 600;
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text-muted); transition: all .15s;
     }
-    .sort-btn.active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); font-weight: 600; }
+    .sort-btn.active { background: var(--primary-bg); border-color: var(--primary);
+                       color: var(--primary); }
     .sort-btn:hover:not(.active) { background: var(--border); }
 
-    /* ── Table ── */
-    .table-wrap {
-      background: var(--surface);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow-x: auto;
-    }
-    table { width: 100%; border-collapse: collapse; font-size: .875rem; }
-    thead th {
-      background: var(--surface-2);
-      padding: .65rem .75rem;
-      text-align: left;
-      font-size: .78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: var(--primary-light); }
-    td { padding: .6rem .75rem; vertical-align: top; }
-    .td-titulo { min-width: 220px; max-width: 280px; }
-    .titulo-text { font-weight: 600; line-height: 1.3; display: block; margin-bottom: .2rem; }
-    .titulo-sub { font-size: .78rem; color: var(--text-muted); }
-    .td-precio { white-space: nowrap; font-weight: 700; font-size: 1rem; }
-    .td-tipo { white-space: nowrap; }
-    .td-zona { min-width: 130px; }
-    .zona-name { font-weight: 600; }
-    .colonia-name { font-size: .78rem; color: var(--text-muted); }
-    .td-detalles { min-width: 140px; font-size: .8rem; color: var(--text-muted); }
-    .td-mascotas { white-space: nowrap; }
-    .td-requisitos { min-width: 220px; font-size: .8rem; }
-    .td-scores { white-space: nowrap; }
-    .td-link { white-space: nowrap; }
+    /* ── Cards grid ── */
+    #view-cards { display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1rem; }
 
-    /* ── Badges ── */
+    .card {
+      background: var(--surface); border-radius: var(--radius);
+      box-shadow: var(--card-shadow); padding: 1rem;
+      display: flex; flex-direction: column; gap: .6rem;
+      transition: box-shadow .18s, transform .18s;
+    }
+    .card:hover { box-shadow: var(--card-hover); transform: translateY(-2px); }
+
+    .card-head {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem;
+    }
+    .card-tipo {
+      font-size: .72rem; font-weight: 700; padding: .18rem .55rem;
+      border-radius: 5px; white-space: nowrap;
+    }
+    .tipo-casa       { background: #e0f2fe; color: #0369a1; }
+    .tipo-depto      { background: #f3e8ff; color: #7c3aed; }
+    .tipo-otro       { background: var(--neutral-bg); color: var(--neutral); }
+    [data-theme="dark"] .tipo-casa  { background: #0c2a40; color: #7dd3fc; }
+    [data-theme="dark"] .tipo-depto { background: #2d1052; color: #c4b5fd; }
+
+    .card-score {
+      font-size: .72rem; font-weight: 800; padding: .2rem .5rem;
+      border-radius: 5px; white-space: nowrap; min-width: 32px; text-align: center;
+    }
+    .score-hi { background: var(--success-bg); color: var(--success); }
+    .score-md { background: var(--warning-bg); color: var(--warning); }
+    .score-lo { background: var(--danger-bg);  color: var(--danger); }
+
+    .card-title {
+      font-size: .92rem; font-weight: 700; line-height: 1.35;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-title a { color: var(--text); }
+    .card-title a:hover { color: var(--primary); text-decoration: none; }
+
+    .card-price-row {
+      display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+    }
+    .card-price {
+      font-size: 1.2rem; font-weight: 800; color: var(--text);
+    }
+    .price-currency { font-size: .78rem; font-weight: 400; color: var(--text-muted); }
+    .trend {
+      font-size: .75rem; font-weight: 700; white-space: nowrap;
+    }
+    .trend-down { color: var(--success); }
+    .trend-up   { color: var(--danger); }
+    .sparkline-wrap { display: flex; align-items: center; }
+
+    .card-specs {
+      font-size: .82rem; color: var(--text-muted);
+      display: flex; gap: .75rem; flex-wrap: wrap;
+    }
+    .spec { display: flex; align-items: center; gap: .2rem; }
+
+    .card-zone { font-size: .8rem; color: var(--text-muted); }
+    .zone-colonia { font-weight: 600; color: var(--text); }
+
+    .card-badges { display: flex; flex-wrap: wrap; gap: .3rem; }
     .badge {
-      display: inline-block;
-      border-radius: 4px;
-      padding: .18rem .55rem;
-      font-size: .72rem;
-      font-weight: 700;
-      white-space: nowrap;
-      line-height: 1.4;
+      font-size: .7rem; font-weight: 700; padding: .18rem .5rem;
+      border-radius: 4px; white-space: nowrap;
     }
-    .badge-success { background: #e8f5e9; color: var(--success); }
-    .badge-danger  { background: #ffebee; color: var(--danger); }
-    .badge-warning { background: #fff3e0; color: var(--warning); }
-    .badge-neutral { background: #eceff1; color: var(--neutral); }
-    [data-theme="dark"] .badge-success { background: #1b3a1d; }
-    [data-theme="dark"] .badge-danger  { background: #3b1010; }
-    [data-theme="dark"] .badge-warning { background: #3b2010; }
-    [data-theme="dark"] .badge-neutral { background: #263238; }
+    .badge-pets-yes  { background: var(--success-bg); color: var(--success); }
+    .badge-pets-no   { background: var(--danger-bg);  color: var(--danger); }
+    .badge-pets-cond { background: var(--warning-bg); color: var(--warning); }
+    .badge-pets-unk  { background: var(--neutral-bg); color: var(--neutral); }
+    .badge-aval      { background: var(--warning-bg); color: var(--warning); }
+    .badge-no-aval   { background: var(--success-bg); color: var(--success); }
+    .badge-ja        { background: var(--primary-bg); color: var(--primary); }
+    .badge-req       { background: var(--neutral-bg); color: var(--neutral); }
 
-    .score-bar {
-      display: flex;
-      align-items: center;
-      gap: .4rem;
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: auto; padding-top: .4rem; border-top: 1px solid var(--border);
     }
-    .score-pill {
-      display: inline-block;
-      border-radius: 12px;
-      padding: .15rem .55rem;
-      font-size: .75rem;
-      font-weight: 700;
-      min-width: 34px;
-      text-align: center;
+    .card-date { font-size: .75rem; color: var(--text-muted); }
+    .btn-ver {
+      font-size: .78rem; font-weight: 700; padding: .3rem .75rem;
+      background: var(--primary); color: #fff; border-radius: 6px;
+      transition: opacity .15s;
     }
-    .score-high   { background: #e8f5e9; color: var(--success); }
-    .score-medium { background: #fff8e1; color: #f57f17; }
-    .score-low    { background: #ffebee; color: var(--danger); }
-    [data-theme="dark"] .score-high   { background: #1b3a1d; }
-    [data-theme="dark"] .score-medium { background: #3b3010; }
-    [data-theme="dark"] .score-low    { background: #3b1010; }
+    .btn-ver:hover { opacity: .85; text-decoration: none; }
 
-    .req-row { display: flex; flex-wrap: wrap; gap: .2rem; margin-top: .2rem; }
+    /* ── Map view ── */
+    #view-map { display: none; border-radius: var(--radius); overflow: hidden;
+                box-shadow: var(--card-shadow); }
+    #leaflet-map { height: 600px; width: 100%; }
+    .map-legend {
+      position: absolute; bottom: 30px; left: 10px; z-index: 999;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: .5rem .75rem; font-size: .78rem;
+      box-shadow: var(--card-shadow);
+    }
+    .map-legend-item { display: flex; align-items: center; gap: .4rem; margin-bottom: .2rem; }
+    .map-legend-dot {
+      width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,.7);
+    }
 
-    /* ── Empty / error state ── */
+    /* ── Popup override ── */
+    .leaflet-popup-content-wrapper {
+      border-radius: 10px !important; box-shadow: 0 4px 16px rgba(0,0,0,.2) !important;
+    }
+    .leaflet-popup-content { font-size: .85rem; line-height: 1.5; min-width: 200px; }
+    .popup-title { font-weight: 700; margin-bottom: .3rem; }
+    .popup-price { font-size: 1rem; font-weight: 800; }
+    .popup-meta  { font-size: .78rem; color: #666; margin: .2rem 0; }
+    .popup-badges { display: flex; flex-wrap: wrap; gap: .2rem; margin: .4rem 0; }
+    .popup-link { font-weight: 700; font-size: .8rem; }
+
+    /* ── Empty / error states ── */
     .state-box {
-      text-align: center;
-      padding: 4rem 2rem;
+      grid-column: 1 / -1; text-align: center; padding: 4rem 2rem;
       color: var(--text-muted);
     }
-    .state-box .state-icon { font-size: 3rem; margin-bottom: 1rem; }
-    .state-box h2 { font-size: 1.2rem; margin-bottom: .5rem; color: var(--text); }
-    .state-box p { font-size: .9rem; max-width: 400px; margin: 0 auto; }
+    .state-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
+    .state-box h2 { font-size: 1.1rem; color: var(--text); margin-bottom: .5rem; }
+    .state-box p  { font-size: .88rem; max-width: 380px; margin: 0 auto; }
 
     /* ── Responsive ── */
-    @media (max-width: 700px) {
-      table { font-size: .8rem; }
-      td, th { padding: .5rem .5rem; }
-      .td-titulo { min-width: 160px; }
-      .header-title { font-size: 1rem; }
+    @media (max-width: 640px) {
+      .app { padding: .75rem; }
+      #view-cards { grid-template-columns: 1fr; }
+      .header-inner { padding: .6rem .75rem; }
+      #leaflet-map { height: 420px; }
     }
   </style>
 </head>
 <body>
 <header>
   <div class="header-inner">
-    <div>
-      <div class="header-title">🏠 Monitor de Renta — Guadalajara</div>
-      <div class="header-meta" id="last-updated">Cargando...</div>
+    <div class="header-brand">
+      <h1>🏠 Monitor de Renta — Guadalajara</h1>
+      <p id="last-updated">Cargando…</p>
     </div>
-    <button class="theme-btn" id="theme-toggle" aria-label="Cambiar tema">🌙 Oscuro</button>
+    <div class="header-controls">
+      <div class="view-toggle">
+        <button class="view-btn active" id="btn-view-cards">🃏 Tarjetas</button>
+        <button class="view-btn"        id="btn-view-map">🗺 Mapa</button>
+      </div>
+      <button class="icon-btn" id="theme-btn">🌙</button>
+    </div>
   </div>
 </header>
 
 <div class="app">
+
+  <!-- Filters -->
   <div class="filters-wrap">
-    <div class="filters-title">Filtros</div>
-    <div class="filters-grid">
-      <div class="filter-group search-group">
-        <label for="search">Búsqueda de texto</label>
-        <input type="text" id="search" placeholder="Título, colonia, descripción…" />
+    <div class="filters-header" id="filters-toggle">
+      <div class="filters-header-left">
+        <span class="filters-title">Filtros</span>
+        <span class="filters-active-count" id="active-count">0</span>
       </div>
-      <div class="filter-group">
-        <label for="f-precio-max">Precio máximo (MXN)</label>
-        <input type="number" id="f-precio-max" placeholder="Ej: 15000" min="0" step="500" />
-      </div>
-      <div class="filter-group">
-        <label for="f-tipo">Tipo</label>
-        <select id="f-tipo"><option value="">Todos</option></select>
-      </div>
-      <div class="filter-group">
-        <label for="f-zona">Zona</label>
-        <select id="f-zona"><option value="">Todas</option></select>
-      </div>
-      <div class="filter-group">
-        <label for="f-colonia">Colonia</label>
-        <select id="f-colonia"><option value="">Todas</option></select>
-      </div>
-      <div class="filter-group">
-        <label for="f-recamaras">Recámaras mínimas</label>
-        <select id="f-recamaras">
-          <option value="">Cualquiera</option>
-          <option value="1">1+</option>
-          <option value="2">2+</option>
-          <option value="3">3+</option>
-          <option value="4">4+</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label for="f-mascotas">Mascotas</label>
-        <select id="f-mascotas">
-          <option value="">Cualquiera</option>
-          <option value="Si acepta mascotas">Sí acepta</option>
-          <option value="Acepta mascotas con restricciones">Con restricciones</option>
-          <option value="No acepta mascotas">No acepta</option>
-          <option value="No especificado">No especificado</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label for="f-aval">Requiere aval</label>
-        <select id="f-aval">
-          <option value="">Cualquiera</option>
-          <option value="Si">Sí</option>
-          <option value="No">No</option>
-          <option value="No especificado">No especificado</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label for="f-justicia">Justicia alternativa</label>
-        <select id="f-justicia">
-          <option value="">Cualquiera</option>
-          <option value="Si">Sí</option>
-          <option value="No">No</option>
-          <option value="No especificado">No especificado</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label for="f-score-min">Score mínimo</label>
-        <input type="number" id="f-score-min" placeholder="0–100" min="0" max="100" />
-      </div>
+      <span class="filters-chevron" id="filters-chevron">▼</span>
     </div>
-    <div class="filters-actions">
-      <button class="btn-clear" id="btn-clear">✕ Limpiar filtros</button>
-      <span id="results-count"></span>
+    <div class="filters-body open" id="filters-body">
+      <div class="filters-grid">
+        <div class="fg fg-full">
+          <label for="f-search">Búsqueda libre</label>
+          <input type="text" id="f-search" placeholder="Título, colonia, descripción…" />
+        </div>
+        <div class="fg">
+          <label for="f-precio">Precio máx (MXN)</label>
+          <input type="number" id="f-precio" placeholder="20000" min="0" step="500" />
+        </div>
+        <div class="fg">
+          <label for="f-tipo">Tipo</label>
+          <select id="f-tipo"><option value="">Todos</option></select>
+        </div>
+        <div class="fg">
+          <label for="f-zona">Zona</label>
+          <select id="f-zona"><option value="">Todas</option></select>
+        </div>
+        <div class="fg">
+          <label for="f-colonia">Colonia</label>
+          <select id="f-colonia"><option value="">Todas</option></select>
+        </div>
+        <div class="fg">
+          <label for="f-rec">Recámaras mín.</label>
+          <select id="f-rec">
+            <option value="">Cualquiera</option>
+            <option value="1">1+</option><option value="2">2+</option>
+            <option value="3">3+</option><option value="4">4+</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="f-mascotas">Mascotas</label>
+          <select id="f-mascotas">
+            <option value="">Cualquiera</option>
+            <option value="sí acepta mascotas">Acepta</option>
+            <option value="acepta mascotas con restricciones">Con restricción</option>
+            <option value="no acepta mascotas">No acepta</option>
+            <option value="no especificado">No especificado</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="f-aval">Aval</label>
+          <select id="f-aval">
+            <option value="">Cualquiera</option>
+            <option value="sí">Requiere</option>
+            <option value="no">Sin aval</option>
+            <option value="no especificado">No especificado</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="f-ja">Justicia Alt.</label>
+          <select id="f-ja">
+            <option value="">Cualquiera</option>
+            <option value="sí">Acepta</option>
+            <option value="no especificado">No especificado</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="f-score">Score mín.</label>
+          <input type="number" id="f-score" placeholder="0–100" min="0" max="100" />
+        </div>
+      </div>
+      <div class="filters-actions">
+        <button class="btn-clear" id="btn-clear">✕ Limpiar</button>
+        <span id="results-count"></span>
+      </div>
     </div>
   </div>
 
-  <div class="sort-bar">
-    <span>Ordenar por:</span>
-    <button class="sort-btn" data-sort="precio_mensual" data-dir="asc">Precio ↑</button>
-    <button class="sort-btn" data-sort="precio_mensual" data-dir="desc">Precio ↓</button>
-    <button class="sort-btn" data-sort="score_calidad" data-dir="desc">Score ↓</button>
-    <button class="sort-btn" data-sort="recamaras" data-dir="desc">Recámaras ↓</button>
-    <button class="sort-btn" data-sort="prioridad_zona" data-dir="desc">Prioridad ↓</button>
-    <button class="sort-btn" data-sort="fecha_publicacion" data-dir="desc">Fecha ↓</button>
+  <!-- Toolbar / sort -->
+  <div class="toolbar">
+    <span class="toolbar-label">Ordenar:</span>
+    <button class="sort-btn active" data-key="precio_mensual" data-dir="asc">Precio ↑</button>
+    <button class="sort-btn" data-key="precio_mensual" data-dir="desc">Precio ↓</button>
+    <button class="sort-btn" data-key="score_calidad" data-dir="desc">Score ↓</button>
+    <button class="sort-btn" data-key="recamaras" data-dir="desc">Recámaras ↓</button>
+    <button class="sort-btn" data-key="prioridad_zona" data-dir="desc">Prioridad ↓</button>
+    <button class="sort-btn" data-key="fecha_publicacion" data-dir="desc">Fecha ↓</button>
   </div>
 
-  <div class="table-wrap" id="table-wrap">
-    <div class="state-box" id="loading-state">
-      <div class="state-icon">⏳</div>
-      <h2>Cargando anuncios…</h2>
-    </div>
+  <!-- Cards -->
+  <div id="view-cards">
+    <div class="state-box"><span class="state-icon">⏳</span><h2>Cargando…</h2></div>
   </div>
-</div>
 
+  <!-- Map -->
+  <div id="view-map">
+    <div id="leaflet-map"></div>
+  </div>
+
+</div><!-- .app -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// ── State ──────────────────────────────────────────────────────────────────
-let ALL_LISTINGS = [];
-let filtered = [];
-let sortKey = 'precio_mensual';
-let sortDir = 'asc';
-
-const filters = {
-  search: '',
-  precio_max: null,
-  tipo: '',
-  zona: '',
-  colonia: '',
-  recamaras: null,
-  mascotas: '',
-  aval: '',
-  justicia: '',
-  score_min: null,
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+const S = {
+  view: 'cards',
+  listings: [],
+  history: {},
+  filtered: [],
+  sortKey: 'precio_mensual',
+  sortDir: 'asc',
+  filtersOpen: true,
+  filters: {
+    search: '', precio: null, tipo: '', zona: '', colonia: '',
+    rec: null, mascotas: '', aval: '', ja: '', score: null,
+  },
 };
 
-// ── Theme ──────────────────────────────────────────────────────────────────
-const themeBtn = document.getElementById('theme-toggle');
+// ═══════════════════════════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════════════════════════
 let dark = localStorage.getItem('theme') === 'dark';
 applyTheme();
-
-themeBtn.addEventListener('click', () => {
+document.getElementById('theme-btn').addEventListener('click', () => {
   dark = !dark;
   localStorage.setItem('theme', dark ? 'dark' : 'light');
   applyTheme();
+  if (S.view === 'map' && _map) _map.invalidateSize();
 });
-
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-  themeBtn.textContent = dark ? '☀️ Claro' : '🌙 Oscuro';
+  document.getElementById('theme-btn').textContent = dark ? '☀️' : '🌙';
 }
 
-// ── Data loading ───────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// DATA LOADING
+// ═══════════════════════════════════════════════════════════════
 async function loadData() {
   try {
-    const [listingsRes, metaRes] = await Promise.allSettled([
+    const [lRes, mRes, hRes] = await Promise.allSettled([
       fetch('data/listings.json'),
       fetch('data/metadata.json'),
+      fetch('data/price_history.json'),
     ]);
 
-    if (metaRes.status === 'fulfilled' && metaRes.value.ok) {
-      const meta = await metaRes.value.json();
-      renderMeta(meta);
+    if (mRes.status === 'fulfilled' && mRes.value.ok) {
+      renderMeta(await mRes.value.json());
     }
-
-    if (listingsRes.status === 'fulfilled' && listingsRes.value.ok) {
-      ALL_LISTINGS = await listingsRes.value.json();
-    } else {
-      ALL_LISTINGS = [];
+    if (hRes.status === 'fulfilled' && hRes.value.ok) {
+      S.history = await hRes.value.json();
     }
+    S.listings = (lRes.status === 'fulfilled' && lRes.value.ok)
+      ? await lRes.value.json()
+      : [];
 
-    populateFilters();
+    populateSelects();
     applyFiltersAndSort();
-  } catch (err) {
-    showError('No se pudo cargar listings.json. ' + err.message);
+  } catch (e) {
+    showGlobalError(e.message);
   }
 }
 
-function renderMeta(meta) {
-  const dt = meta.fecha_actualizacion
-    ? new Date(meta.fecha_actualizacion).toLocaleString('es-MX', {
-        dateStyle: 'medium', timeStyle: 'short',
-      })
-    : 'Desconocida';
+function renderMeta(m) {
+  const dt = m.fecha_actualizacion
+    ? new Date(m.fecha_actualizacion).toLocaleString('es-MX', {dateStyle:'medium', timeStyle:'short'})
+    : '—';
   document.getElementById('last-updated').textContent =
-    `Actualizado: ${dt} · ${meta.total_anuncios ?? 0} anuncios · Zona: ${meta.zona_objetivo ?? ''} · Precio máx: $${(meta.precio_maximo ?? 0).toLocaleString()}`;
+    `Actualizado: ${dt} · ${m.total_anuncios ?? 0} anuncios · Zona: ${m.zona_objetivo ?? ''} · Máx $${(m.precio_maximo ?? 0).toLocaleString('es-MX')}`;
 }
 
-// ── Populate select filters ────────────────────────────────────────────────
-function populateFilters() {
-  populate('f-tipo', [...new Set(ALL_LISTINGS.map(l => l.tipo).filter(Boolean))].sort());
-  populate('f-zona', [...new Set(ALL_LISTINGS.map(l => l.zona).filter(Boolean))].sort());
-  populate('f-colonia', [...new Set(ALL_LISTINGS.map(l => l.colonia).filter(Boolean))].sort());
+function populateSelects() {
+  fill('f-tipo',    uniq(S.listings.map(l => l.tipo)));
+  fill('f-zona',    uniq(S.listings.map(l => l.zona)));
+  fill('f-colonia', uniq(S.listings.map(l => l.colonia)));
 }
-
-function populate(id, values) {
+function uniq(arr) { return [...new Set(arr.filter(Boolean))].sort(); }
+function fill(id, vals) {
   const sel = document.getElementById(id);
   const prev = sel.value;
   sel.innerHTML = '<option value="">Todos</option>';
-  values.forEach(v => {
-    const opt = document.createElement('option');
-    opt.value = v;
-    opt.textContent = v;
-    sel.appendChild(opt);
-  });
+  vals.forEach(v => { const o = document.createElement('option'); o.value = o.textContent = v; sel.appendChild(o); });
   sel.value = prev;
 }
 
-// ── Filter & Sort ──────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// FILTER & SORT
+// ═══════════════════════════════════════════════════════════════
 function applyFiltersAndSort() {
-  const searchLower = filters.search.toLowerCase();
+  const { search, precio, tipo, zona, colonia, rec, mascotas, aval, ja, score } = S.filters;
+  const q = search.toLowerCase();
 
-  filtered = ALL_LISTINGS.filter(l => {
-    if (filters.search) {
-      const hay = [l.titulo, l.colonia, l.zona, l.descripcion_corta, l.descripcion_original]
-        .join(' ').toLowerCase();
-      if (!hay.includes(searchLower)) return false;
+  S.filtered = S.listings.filter(l => {
+    if (q) {
+      const hay = [l.titulo, l.colonia, l.zona, l.descripcion_corta, l.descripcion_original].join(' ').toLowerCase();
+      if (!hay.includes(q)) return false;
     }
-    if (filters.precio_max != null && l.precio_mensual != null && l.precio_mensual > filters.precio_max) return false;
-    if (filters.tipo && l.tipo !== filters.tipo) return false;
-    if (filters.zona && l.zona !== filters.zona) return false;
-    if (filters.colonia && l.colonia !== filters.colonia) return false;
-    if (filters.recamaras != null && (l.recamaras == null || l.recamaras < filters.recamaras)) return false;
-    if (filters.mascotas) {
-      const norm = normalizeFilterValue(l.mascotas || '');
-      if (norm !== filters.mascotas) return false;
-    }
-    if (filters.aval) {
-      const norm = normalizeFilterValue(l.requiere_aval || '');
-      if (norm !== filters.aval) return false;
-    }
-    if (filters.justicia) {
-      const norm = normalizeFilterValue(l.justicia_alternativa || '');
-      if (norm !== filters.justicia) return false;
-    }
-    if (filters.score_min != null && l.score_calidad < filters.score_min) return false;
+    if (precio != null && l.precio_mensual != null && l.precio_mensual > precio) return false;
+    if (tipo    && l.tipo    !== tipo)    return false;
+    if (zona    && l.zona    !== zona)    return false;
+    if (colonia && l.colonia !== colonia) return false;
+    if (rec  != null && (l.recamaras == null || l.recamaras < rec))   return false;
+    if (mascotas && (l.mascotas || '').toLowerCase() !== mascotas)    return false;
+    if (aval     && (l.requiere_aval || '').toLowerCase() !== aval)   return false;
+    if (ja       && (l.justicia_alternativa || '').toLowerCase() !== ja) return false;
+    if (score != null && l.score_calidad < score) return false;
     return true;
   });
 
-  // Sort
-  filtered.sort((a, b) => {
-    let va = a[sortKey];
-    let vb = b[sortKey];
-    if (va == null) va = sortDir === 'asc' ? Infinity : -Infinity;
-    if (vb == null) vb = sortDir === 'asc' ? Infinity : -Infinity;
+  S.filtered.sort((a, b) => {
+    let va = a[S.sortKey], vb = b[S.sortKey];
+    if (va == null) va = S.sortDir === 'asc' ? Infinity : -Infinity;
+    if (vb == null) vb = S.sortDir === 'asc' ? Infinity : -Infinity;
     if (typeof va === 'string') va = va.toLowerCase();
     if (typeof vb === 'string') vb = vb.toLowerCase();
-    if (va < vb) return sortDir === 'asc' ? -1 : 1;
-    if (va > vb) return sortDir === 'asc' ? 1 : -1;
-    return 0;
+    return (va < vb ? -1 : va > vb ? 1 : 0) * (S.sortDir === 'asc' ? 1 : -1);
   });
 
-  renderTable();
-  updateCount();
-}
-
-function normalizeFilterValue(v) {
-  return v.replace('Sí', 'Si').replace('é', 'e');
-}
-
-// ── Render table ───────────────────────────────────────────────────────────
-function renderTable() {
-  const wrap = document.getElementById('table-wrap');
-
-  if (ALL_LISTINGS.length === 0) {
-    wrap.innerHTML = emptyState(
-      '📋',
-      'Sin anuncios disponibles',
-      'Ejecuta collector.py para poblar listings.json, o espera la actualización automática.',
-    );
-    return;
-  }
-
-  if (filtered.length === 0) {
-    wrap.innerHTML = emptyState(
-      '🔍',
-      'Sin resultados',
-      'Prueba ajustar los filtros o el precio máximo.',
-    );
-    return;
-  }
-
-  const rows = filtered.map(l => `
-    <tr>
-      <td class="td-titulo">
-        <a class="titulo-text" href="${escHtml(l.url || '#')}" target="_blank" rel="noopener">
-          ${escHtml(l.titulo || 'Sin título')}
-        </a>
-        <span class="titulo-sub">${escHtml(l.descripcion_corta || '')}</span>
-      </td>
-      <td class="td-precio">${formatPrice(l.precio_mensual, l.moneda)}</td>
-      <td class="td-tipo">${escHtml(l.tipo || '—')}</td>
-      <td class="td-zona">
-        <div class="zona-name">${escHtml(l.zona || '—')}</div>
-        <div class="colonia-name">${escHtml(l.colonia || '')}</div>
-      </td>
-      <td class="td-detalles">
-        ${l.recamaras != null ? `<span>🛏 ${l.recamaras} rec.</span>` : ''}
-        ${l.banos != null ? ` · 🚿 ${l.banos}` : ''}
-        ${l.metros_cuadrados != null ? ` · 📐 ${l.metros_cuadrados}m²` : ''}
-      </td>
-      <td class="td-mascotas">${petsBadge(l.mascotas)}</td>
-      <td class="td-requisitos">
-        <div class="req-row">
-          ${avalBadge(l.requiere_aval)}
-          ${justiciaBadge(l.justicia_alternativa)}
-          ${depositoBadge(l.requiere_deposito)}
-          ${polizaBadge(l.requiere_poliza_juridica)}
-        </div>
-        <div style="margin-top:.3rem;font-size:.75rem;color:var(--text-muted)">
-          ${escHtml(l.detalle_requisitos || '')}
-        </div>
-      </td>
-      <td class="td-scores">
-        <div class="score-bar" title="Score calidad / confianza">
-          ${scorePill(l.score_calidad, 'Q')}
-          ${scorePill(l.score_confianza_extraccion, 'C')}
-        </div>
-      </td>
-      <td class="td-link">
-        <a href="${escHtml(l.url || '#')}" target="_blank" rel="noopener"
-           title="${escHtml(l.fuente || '')} · ${escHtml(l.fecha_publicacion || '')}">
-          Ver ↗
-        </a>
-      </td>
-    </tr>
-  `).join('');
-
-  wrap.innerHTML = `
-    <table>
-      <thead>
-        <tr>
-          <th>Anuncio</th>
-          <th>Precio/mes</th>
-          <th>Tipo</th>
-          <th>Zona / Colonia</th>
-          <th>Detalles</th>
-          <th>Mascotas</th>
-          <th>Requisitos</th>
-          <th>Score</th>
-          <th>Link</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
-  `;
-}
-
-// ── Badge helpers ──────────────────────────────────────────────────────────
-function petsBadge(val) {
-  if (!val || val === 'No especificado') return badge('neutral', '❓ N/E');
-  if (val === 'Sí acepta mascotas') return badge('success', '🐾 Acepta');
-  if (val === 'No acepta mascotas') return badge('danger', '🚫 No acepta');
-  return badge('warning', '⚠️ Restricción');
-}
-function avalBadge(val) {
-  if (!val || val === 'No especificado') return '';
-  if (val === 'Sí') return badge('warning', '📄 Aval');
-  if (val === 'No') return badge('success', '✓ Sin aval');
-  return '';
-}
-function justiciaBadge(val) {
-  if (!val || val === 'No especificado') return '';
-  if (val === 'Sí') return badge('success', '⚖️ J. Alt.');
-  return '';
-}
-function depositoBadge(val) {
-  if (!val || val === 'No especificado') return '';
-  if (val === 'Sí') return badge('neutral', '💰 Depósito');
-  return '';
-}
-function polizaBadge(val) {
-  if (!val || val === 'No especificado') return '';
-  if (val === 'Sí') return badge('neutral', '📋 Póliza');
-  return '';
-}
-function badge(type, text) {
-  return `<span class="badge badge-${type}">${text}</span>`;
-}
-function scorePill(val, label) {
-  if (val == null) return '';
-  const cls = val >= 70 ? 'score-high' : val >= 40 ? 'score-medium' : 'score-low';
-  return `<span class="score-pill ${cls}" title="${label}: ${val}/100">${val}</span>`;
-}
-
-// ── Utilities ─────────────────────────────────────────────────────────────
-function formatPrice(price, moneda) {
-  if (price == null) return '<span style="color:var(--text-muted)">A convenir</span>';
-  return `$${price.toLocaleString('es-MX')} <small style="color:var(--text-muted)">${moneda || 'MXN'}</small>`;
-}
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-function emptyState(icon, title, msg) {
-  return `<div class="state-box"><div class="state-icon">${icon}</div><h2>${title}</h2><p>${msg}</p></div>`;
-}
-function showError(msg) {
-  document.getElementById('table-wrap').innerHTML = emptyState('❌', 'Error al cargar', msg);
-}
-function updateCount() {
+  updateActiveCount();
   document.getElementById('results-count').textContent =
-    `${filtered.length} de ${ALL_LISTINGS.length} anuncio${ALL_LISTINGS.length !== 1 ? 's' : ''}`;
+    `${S.filtered.length} de ${S.listings.length} anuncio${S.listings.length !== 1 ? 's' : ''}`;
+
+  if (S.view === 'cards') renderCards();
+  else renderMap();
 }
 
-// ── Event wiring ───────────────────────────────────────────────────────────
-document.getElementById('search').addEventListener('input', e => {
-  filters.search = e.target.value;
-  applyFiltersAndSort();
+function updateActiveCount() {
+  const { search, precio, tipo, zona, colonia, rec, mascotas, aval, ja, score } = S.filters;
+  const n = [search, precio, tipo, zona, colonia, rec, mascotas, aval, ja, score].filter(v => v !== '' && v != null).length;
+  const el = document.getElementById('active-count');
+  el.textContent = n;
+  el.classList.toggle('visible', n > 0);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CARDS RENDERER
+// ═══════════════════════════════════════════════════════════════
+function renderCards() {
+  const wrap = document.getElementById('view-cards');
+  if (!S.listings.length) { wrap.innerHTML = emptyState('📋', 'Sin anuncios', 'Ejecuta collector.py para generar listings.json'); return; }
+  if (!S.filtered.length) { wrap.innerHTML = emptyState('🔍', 'Sin resultados', 'Ajusta los filtros o sube el precio máximo'); return; }
+  wrap.innerHTML = S.filtered.map(cardHtml).join('');
+}
+
+function cardHtml(l) {
+  const tipoClass = l.tipo === 'Casa' ? 'tipo-casa' : l.tipo === 'Departamento' ? 'tipo-depto' : 'tipo-otro';
+  const scoreClass = l.score_calidad >= 70 ? 'score-hi' : l.score_calidad >= 40 ? 'score-md' : 'score-lo';
+
+  const priceStr = l.precio_mensual != null
+    ? `<span class="card-price">$${l.precio_mensual.toLocaleString('es-MX')}</span><span class="price-currency"> MXN/mes</span>`
+    : `<span class="card-price" style="color:var(--text-muted)">A convenir</span>`;
+
+  const trend = priceTrend(l.id);
+  const spark = sparklineSvg(l.id);
+
+  const specs = [
+    l.recamaras     != null ? `<span class="spec">🛏 ${l.recamaras} rec.</span>` : '',
+    l.banos         != null ? `<span class="spec">🚿 ${l.banos}</span>` : '',
+    l.metros_cuadrados != null ? `<span class="spec">📐 ${l.metros_cuadrados}m²</span>` : '',
+  ].filter(Boolean).join('');
+
+  const badges = [
+    petsBadge(l.mascotas),
+    avalBadge(l.requiere_aval),
+    jaBadge(l.justicia_alternativa),
+    depositoBadge(l.requiere_deposito),
+    polizaBadge(l.requiere_poliza_juridica),
+  ].filter(Boolean).join('');
+
+  const dateStr = l.fecha_publicacion
+    ? new Date(l.fecha_publicacion + 'T12:00:00').toLocaleDateString('es-MX', {day:'numeric', month:'short'})
+    : '';
+
+  return `<article class="card">
+    <div class="card-head">
+      <span class="card-tipo ${tipoClass}">${esc(l.tipo || '—')}</span>
+      <span class="card-score ${scoreClass}" title="Score calidad: ${l.score_calidad}/100">Q:${l.score_calidad}</span>
+    </div>
+    <h3 class="card-title"><a href="${esc(l.url || '#')}" target="_blank" rel="noopener">${esc(l.titulo || 'Sin título')}</a></h3>
+    <div class="card-price-row">
+      ${priceStr}
+      ${trend ? `<span class="${trend.cls}">${trend.text}</span>` : ''}
+      ${spark ? `<span class="sparkline-wrap">${spark}</span>` : ''}
+    </div>
+    ${specs ? `<div class="card-specs">${specs}</div>` : ''}
+    <div class="card-zone">
+      <span class="zone-colonia">${esc(l.colonia || l.zona || '—')}</span>
+      ${l.colonia && l.zona ? ` · <span>${esc(l.zona)}</span>` : ''}
+    </div>
+    ${badges ? `<div class="card-badges">${badges}</div>` : ''}
+    <div class="card-footer">
+      <span class="card-date">${dateStr}</span>
+      <a class="btn-ver" href="${esc(l.url || '#')}" target="_blank" rel="noopener">Ver ↗</a>
+    </div>
+  </article>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PRICE HISTORY HELPERS
+// ═══════════════════════════════════════════════════════════════
+function priceTrend(id) {
+  const entry = S.history[id];
+  if (!entry?.precios || entry.precios.length < 2) return null;
+  const ps = entry.precios;
+  const last = ps[ps.length - 1].precio;
+  const prev = ps[ps.length - 2].precio;
+  const diff = Math.abs(last - prev);
+  if (diff === 0) return null;
+  return last < prev
+    ? { cls: 'trend trend-down', text: `↓ $${diff.toLocaleString('es-MX')}` }
+    : { cls: 'trend trend-up',   text: `↑ $${diff.toLocaleString('es-MX')}` };
+}
+
+function sparklineSvg(id) {
+  const entry = S.history[id];
+  if (!entry?.precios || entry.precios.length < 2) return '';
+  const vals = entry.precios.map(p => p.precio);
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const range = max - min || 1;
+  const W = 56, H = 22, pad = 3;
+  const pts = vals.map((v, i) => [
+    pad + (i / (vals.length - 1)) * (W - pad * 2),
+    pad + (1 - (v - min) / range) * (H - pad * 2),
+  ]);
+  const ptStr = pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+  const [lx, ly] = pts[pts.length - 1];
+  const last = vals[vals.length - 1], prev = vals[vals.length - 2];
+  const stroke = last < prev ? '#16a34a' : last > prev ? '#dc2626' : '#6b7280';
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="display:block;overflow:visible" aria-hidden="true">
+    <polyline points="${ptStr}" fill="none" stroke="${stroke}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="2.5" fill="${stroke}"/>
+  </svg>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// BADGE HELPERS
+// ═══════════════════════════════════════════════════════════════
+function petsBadge(v) {
+  if (!v || v === 'No especificado') return `<span class="badge badge-pets-unk">❓ Mascotas N/E</span>`;
+  if (v === 'Sí acepta mascotas')                 return `<span class="badge badge-pets-yes">🐾 Acepta</span>`;
+  if (v === 'No acepta mascotas')                 return `<span class="badge badge-pets-no">🚫 No mascotas</span>`;
+  return `<span class="badge badge-pets-cond">⚠️ Restricción</span>`;
+}
+function avalBadge(v) {
+  if (!v || v === 'No especificado') return '';
+  if (v === 'Sí') return `<span class="badge badge-aval">📄 Aval</span>`;
+  if (v === 'No') return `<span class="badge badge-no-aval">✓ Sin aval</span>`;
+  return '';
+}
+function jaBadge(v) {
+  if (v === 'Sí') return `<span class="badge badge-ja">⚖️ Just. Alt.</span>`;
+  return '';
+}
+function depositoBadge(v) {
+  if (v === 'Sí') return `<span class="badge badge-req">💰 Depósito</span>`;
+  return '';
+}
+function polizaBadge(v) {
+  if (v === 'Sí') return `<span class="badge badge-req">📋 Póliza</span>`;
+  return '';
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MAP RENDERER
+// ═══════════════════════════════════════════════════════════════
+let _map = null;
+let _markerLayer = null;
+
+function initMap() {
+  if (_map) return;
+  if (typeof L === 'undefined') {
+    document.getElementById('leaflet-map').innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#888;font-size:.9rem">El mapa requiere conexión a internet (Leaflet + OpenStreetMap).</div>';
+    return;
+  }
+  _map = L.map('leaflet-map', { zoomControl: true }).setView([20.6752, -103.3483], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 19,
+  }).addTo(_map);
+
+  // Legend
+  const legend = L.control({ position: 'bottomleft' });
+  legend.onAdd = () => {
+    const d = L.DomUtil.create('div', 'map-legend');
+    d.innerHTML = `
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#16a34a"></div> Score ≥ 70</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#d97706"></div> Score 40–69</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#dc2626"></div> Score &lt; 40</div>`;
+    return d;
+  };
+  legend.addTo(_map);
+}
+
+function renderMap() {
+  initMap();
+  if (!_map) return;
+
+  if (_markerLayer) _markerLayer.clearLayers();
+  _markerLayer = L.layerGroup().addTo(_map);
+
+  const withCoords = S.filtered.filter(l => l.lat != null && l.lng != null);
+
+  withCoords.forEach(l => {
+    const color = l.score_calidad >= 70 ? '#16a34a' : l.score_calidad >= 40 ? '#d97706' : '#dc2626';
+    const icon = L.divIcon({
+      html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2.5px solid white;box-shadow:0 2px 5px rgba(0,0,0,.35)"></div>`,
+      className: '', iconSize: [14, 14], iconAnchor: [7, 7], popupAnchor: [0, -10],
+    });
+
+    const trend = priceTrend(l.id);
+    const trendHtml = trend
+      ? `<span style="color:${trend.cls.includes('down') ? '#16a34a' : '#dc2626'};font-size:.78rem;font-weight:700"> ${trend.text}</span>`
+      : '';
+
+    const popup = `<div class="leaflet-popup-content">
+      <div class="popup-title">${esc(l.titulo || 'Sin título')}</div>
+      <div class="popup-price">${l.precio_mensual != null ? '$' + l.precio_mensual.toLocaleString('es-MX') + ' MXN/mes' : 'A convenir'}${trendHtml}</div>
+      <div class="popup-meta">${esc(l.tipo || '')} · ${esc(l.colonia || l.zona || '')}</div>
+      <div class="popup-meta">${[l.recamaras ? '🛏 '+l.recamaras+' rec.' : '', l.banos ? '🚿 '+l.banos : '', l.metros_cuadrados ? '📐 '+l.metros_cuadrados+'m²' : ''].filter(Boolean).join(' · ')}</div>
+      <div class="popup-badges">${petsBadge(l.mascotas)}${avalBadge(l.requiere_aval)}${jaBadge(l.justicia_alternativa)}</div>
+      <a class="popup-link" href="${esc(l.url || '#')}" target="_blank" rel="noopener">Ver anuncio ↗</a>
+    </div>`;
+
+    L.marker([l.lat, l.lng], { icon }).bindPopup(popup).addTo(_markerLayer);
+  });
+
+  if (!withCoords.length && S.filtered.length) {
+    document.getElementById('leaflet-map').insertAdjacentHTML('afterend',
+      '<p style="text-align:center;color:var(--text-muted);padding:.5rem;font-size:.82rem">Ningún anuncio filtrado tiene coordenadas disponibles.</p>');
+  }
+
+  setTimeout(() => _map.invalidateSize(), 50);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// VIEW SWITCHING
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('btn-view-cards').addEventListener('click', () => switchView('cards'));
+document.getElementById('btn-view-map').addEventListener('click',  () => switchView('map'));
+
+function switchView(v) {
+  S.view = v;
+  document.getElementById('view-cards').style.display = v === 'cards' ? '' : 'none';
+  document.getElementById('view-map').style.display   = v === 'map'   ? '' : 'none';
+  document.getElementById('btn-view-cards').classList.toggle('active', v === 'cards');
+  document.getElementById('btn-view-map').classList.toggle('active',   v === 'map');
+  if (v === 'map') renderMap();
+  else             renderCards();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FILTERS – COLLAPSIBLE PANEL
+// ═══════════════════════════════════════════════════════════════
+document.getElementById('filters-toggle').addEventListener('click', () => {
+  S.filtersOpen = !S.filtersOpen;
+  document.getElementById('filters-body').classList.toggle('open', S.filtersOpen);
+  document.getElementById('filters-chevron').classList.toggle('open', S.filtersOpen);
 });
-document.getElementById('f-precio-max').addEventListener('input', e => {
-  filters.precio_max = e.target.value ? Number(e.target.value) : null;
-  applyFiltersAndSort();
-});
-document.getElementById('f-tipo').addEventListener('change', e => {
-  filters.tipo = e.target.value;
-  applyFiltersAndSort();
-});
-document.getElementById('f-zona').addEventListener('change', e => {
-  filters.zona = e.target.value;
-  applyFiltersAndSort();
-});
-document.getElementById('f-colonia').addEventListener('change', e => {
-  filters.colonia = e.target.value;
-  applyFiltersAndSort();
-});
-document.getElementById('f-recamaras').addEventListener('change', e => {
-  filters.recamaras = e.target.value ? Number(e.target.value) : null;
-  applyFiltersAndSort();
-});
-document.getElementById('f-mascotas').addEventListener('change', e => {
-  filters.mascotas = e.target.value;
-  applyFiltersAndSort();
-});
-document.getElementById('f-aval').addEventListener('change', e => {
-  filters.aval = e.target.value;
-  applyFiltersAndSort();
-});
-document.getElementById('f-justicia').addEventListener('change', e => {
-  filters.justicia = e.target.value;
-  applyFiltersAndSort();
-});
-document.getElementById('f-score-min').addEventListener('input', e => {
-  filters.score_min = e.target.value ? Number(e.target.value) : null;
-  applyFiltersAndSort();
-});
+
+// ═══════════════════════════════════════════════════════════════
+// FILTER WIRING
+// ═══════════════════════════════════════════════════════════════
+function wire(id, key, parse) {
+  document.getElementById(id).addEventListener('input', e => {
+    S.filters[key] = parse ? parse(e.target.value) : e.target.value.toLowerCase();
+    applyFiltersAndSort();
+  });
+  document.getElementById(id).addEventListener('change', e => {
+    S.filters[key] = parse ? parse(e.target.value) : e.target.value.toLowerCase();
+    applyFiltersAndSort();
+  });
+}
+const toNum = v => v ? Number(v) : null;
+wire('f-search',  'search',   v => v);
+wire('f-precio',  'precio',   toNum);
+wire('f-tipo',    'tipo',     v => v);
+wire('f-zona',    'zona',     v => v);
+wire('f-colonia', 'colonia',  v => v);
+wire('f-rec',     'rec',      toNum);
+wire('f-mascotas','mascotas', v => v.toLowerCase());
+wire('f-aval',    'aval',     v => v.toLowerCase());
+wire('f-ja',      'ja',       v => v.toLowerCase());
+wire('f-score',   'score',    toNum);
 
 document.getElementById('btn-clear').addEventListener('click', () => {
-  Object.keys(filters).forEach(k => {
-    filters[k] = typeof filters[k] === 'string' ? '' : null;
-  });
-  document.getElementById('search').value = '';
-  document.getElementById('f-precio-max').value = '';
-  document.getElementById('f-tipo').value = '';
-  document.getElementById('f-zona').value = '';
-  document.getElementById('f-colonia').value = '';
-  document.getElementById('f-recamaras').value = '';
-  document.getElementById('f-mascotas').value = '';
-  document.getElementById('f-aval').value = '';
-  document.getElementById('f-justicia').value = '';
-  document.getElementById('f-score-min').value = '';
+  Object.keys(S.filters).forEach(k => { S.filters[k] = typeof S.filters[k] === 'string' ? '' : null; });
+  ['f-search','f-precio','f-tipo','f-zona','f-colonia','f-rec','f-mascotas','f-aval','f-ja','f-score']
+    .forEach(id => { document.getElementById(id).value = ''; });
   applyFiltersAndSort();
 });
 
+// ═══════════════════════════════════════════════════════════════
+// SORT WIRING
+// ═══════════════════════════════════════════════════════════════
 document.querySelectorAll('.sort-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    sortKey = btn.dataset.sort;
-    sortDir = btn.dataset.dir;
+    S.sortKey = btn.dataset.key;
+    S.sortDir = btn.dataset.dir;
     document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     applyFiltersAndSort();
   });
 });
 
-// Activate default sort button
-document.querySelector('[data-sort="precio_mensual"][data-dir="asc"]').classList.add('active');
+// ═══════════════════════════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════════════════════════
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function emptyState(icon, title, msg) {
+  return `<div class="state-box"><span class="state-icon">${icon}</span><h2>${title}</h2><p>${msg}</p></div>`;
+}
+function showGlobalError(msg) {
+  document.getElementById('view-cards').innerHTML = emptyState('❌','Error al cargar datos', msg);
+}
 
-// ── Boot ───────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════════════════════
 loadData();
 </script>
 </body>

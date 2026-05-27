@@ -417,6 +417,61 @@ def parse_rental_requirements(texts: list[str | None]) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
+# Geocoding (colonia/zona → approximate lat/lng, no API needed)
+# ---------------------------------------------------------------------------
+
+# Approximate centroids for Guadalajara ZMG colonias and zones.
+# Coordinates sourced from OpenStreetMap nominatim references (public domain).
+_COLONIA_COORDS: dict[str, tuple[float, float]] = {
+    "centro": (20.6752, -103.3483),
+    "centro historico": (20.6752, -103.3483),
+    "analco": (20.6692, -103.3391),
+    "mexicaltzingo": (20.6611, -103.3473),
+    "santa tere": (20.6758, -103.3631),
+    "santa teresa": (20.6758, -103.3631),
+    "sagrada familia": (20.6843, -103.3512),
+    "artesanos": (20.6921, -103.3372),
+    "morelos": (20.6841, -103.3402),
+    "san sebastianito": (20.6713, -103.3352),
+    "san sebastian": (20.6713, -103.3352),
+    "las conchas": (20.6651, -103.3551),
+    "guadalajara centro": (20.6752, -103.3483),
+    "americana": (20.6812, -103.3741),
+    "chapalita": (20.6572, -103.4014),
+    "providencia": (20.6922, -103.3891),
+    "ciudad granja": (20.7101, -103.4313),
+    "zapopan": (20.7228, -103.3908),
+    "zapopan norte": (20.7381, -103.3872),
+    "atemajac": (20.7013, -103.3722),
+    "el vergel": (20.6413, -103.3102),
+    "tlaquepaque": (20.6428, -103.3099),
+    "oblatos": (20.6841, -103.3142),
+    "tetlan": (20.6792, -103.3051),
+    "alcalde barranquitas": (20.6951, -103.3583),
+    "arcos vallarta": (20.6772, -103.3891),
+    "col. americana": (20.6812, -103.3741),
+    "lafayette": (20.6892, -103.3831),
+    "atlas": (20.6571, -103.3231),
+}
+
+
+def geocode_listing(colonia: str | None, zona: str | None) -> tuple[float, float] | None:
+    """Return (lat, lng) for a listing using colonia/zona name lookup. No API required."""
+    for text in [colonia, zona]:
+        if not text:
+            continue
+        key = normalize_text(text)
+        # Exact match first
+        if key in _COLONIA_COORDS:
+            return _COLONIA_COORDS[key]
+        # Partial match
+        for k, coords in _COLONIA_COORDS.items():
+            if k in key or key in k:
+                return coords
+    return None
+
+
+# ---------------------------------------------------------------------------
 # URL canonicalization
 # ---------------------------------------------------------------------------
 

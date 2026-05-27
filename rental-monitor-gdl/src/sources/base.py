@@ -62,6 +62,8 @@ class BaseSource(ABC):
             "requiere_comprobantes_ingresos": "No especificado",
             "detalle_requisitos": "",
             "texto_requisitos_original": "",
+            "lat": None,
+            "lng": None,
             "score_calidad": 0,
             "score_confianza_extraccion": 0,
             "_extraction_flags": {},
