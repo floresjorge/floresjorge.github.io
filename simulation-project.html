@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+<!--
+	Story by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Simulation ETL & Churn Pipeline | Jorge Flores-Uribe</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="Project2/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="Project2/assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+		<style>
+			pre {
+				background: #f4f4f4;
+				border-left: 4px solid #6c8ebf;
+				padding: 1.2em 1.5em;
+				font-size: 0.78em;
+				line-height: 1.6;
+				overflow-x: auto;
+				border-radius: 4px;
+			}
+			.tag {
+				display: inline-block;
+				background: #e8edf5;
+				color: #3a5080;
+				border-radius: 3px;
+				padding: 0.2em 0.65em;
+				font-size: 0.82em;
+				font-weight: 600;
+				margin: 0.2em 0.15em;
+			}
+			.metric-number {
+				font-size: 2.4em;
+				font-weight: 700;
+				color: #3a5080;
+				display: block;
+				line-height: 1;
+			}
+		</style>
+	</head>
+	<body class="is-preload">
+
+		<div id="wrapper" class="divided">
+
+			<!-- ── Banner ─────────────────────────────────────────────────── -->
+			<section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+				<div class="content">
+					<h1>Simulation ETL &amp; Churn Pipeline</h1>
+					<p class="major">Python pipeline for retail operations data: extract, transform, load, and predict customer churn.</p>
+					<p>
+						The pipeline processes synthetic sales records from a simulated dog daycare. It validates schema on ingestion,
+						engineers customer-level features, loads to SQLite with idempotent upserts, and trains a logistic regression
+						model with an adjusted classification threshold for the minority churn class.
+					</p>
+					<p>
+						<span class="tag">Python</span>
+						<span class="tag">pandas</span>
+						<span class="tag">SQLAlchemy</span>
+						<span class="tag">scikit-learn</span>
+						<span class="tag">SQLite</span>
+						<span class="tag">argparse</span>
+					</p>
+					<ul class="actions stacked">
+						<li><a href="https://github.com/floresjorge/simulation-etl-pipeline" target="_blank" class="button primary">View on GitHub</a></li>
+						<li><a href="index.html" class="button">← Back to portfolio</a></li>
+					</ul>
+				</div>
+				<div class="image">
+					<img src="images/project-etl.png" alt="Churn score distribution" />
+				</div>
+			</section>
+
+			<!-- ── Spotlight 1: Pipeline ──────────────────────────────────── -->
+			<section class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in" id="pipeline">
+				<div class="content">
+					<h2>Three steps from raw CSV to warehouse</h2>
+					<p>
+						The source data is an AppSheet CSV export, the same format produced by the POS system running in production.
+						Three modules handle the work:
+					</p>
+					<pre>
+data/raw/sales_export.csv
+         │
+         ▼
+  ┌─────────────┐
+  │  extract.py  │  dtype enforcement · schema validation
+  └──────┬──────┘  raises ValueError on missing columns or nulls
+         │
+         ▼
+  ┌──────────────┐
+  │ transform.py  │  date parsing · service normalization
+  └──────┬───────┘  per-customer feature engineering
+         │
+         ▼
+  ┌────────┐
+  │ load.py │  SQLAlchemy upsert → SQLite (PK: sale_id)
+  └────┬───┘  logs inserted vs updated counts separately
+       │
+       ├── sales             (10,558 rows)
+       └── customer_features (320 rows)</pre>
+					<p>
+						The CLI flag <code>--env dev|prod</code> controls log verbosity and DB path.
+						Dev mode streams DEBUG output to the console; prod mode writes WARNING+ to a log file.
+						Both environments run all validations.
+					</p>
+				</div>
+				<div class="image">
+					<img src="images/pic01.png" alt="Pipeline diagram" />
+				</div>
+			</section>
+
+			<!-- ── Spotlight 2: Features ──────────────────────────────────── -->
+			<section class="spotlight style1 orient-left content-align-left image-position-center onscroll-image-fade-in">
+				<div class="content">
+					<h2>Customer-level feature engineering</h2>
+					<p>
+						The raw data is at the transaction level (one row per sale).
+						<code>transform.py</code> aggregates it to one row per customer for the ML model:
+					</p>
+					<ul>
+						<li><strong>days_since_last_visit</strong>: days from last visit to 2024-06-30</li>
+						<li><strong>visit_frequency</strong>: average visits per month over the customer's active window</li>
+						<li><strong>avg_spend</strong>: mean transaction value in MXN</li>
+						<li><strong>preferred_service</strong>: modal service, one-hot encoded for the model</li>
+						<li><strong>is_churned</strong>: read directly from the raw CSV, never recomputed downstream</li>
+					</ul>
+					<p>
+						The churn label definition lives exclusively in <code>generate_synthetic_data.py</code>
+						as <code>CHURN_CUTOFF_DATE = date(2024, 6, 1)</code>.
+						Both <code>transform.py</code> and <code>churn_model.py</code> import this constant
+						instead of hardcoding their own cutoff. One definition, no label drift.
+					</p>
+				</div>
+				<div class="image">
+					<img src="images/pic01.png" alt="Feature engineering" />
+				</div>
+			</section>
+
+			<!-- ── Key stats ──────────────────────────────────────────────── -->
+			<section class="wrapper style1 align-center">
+				<div class="inner">
+					<h2>Model results</h2>
+					<p>
+						Logistic Regression · 20% held-out test set (64 customers, stratified) ·
+						threshold <strong>0.35</strong>
+					</p>
+					<div class="items style3 medium onscroll-fade-in">
+						<section>
+							<span class="icon solid style2 major fa-chart-line"></span>
+							<span class="metric-number">0.9635</span>
+							<h3>ROC-AUC</h3>
+						</section>
+						<section>
+							<span class="icon solid style2 major fa-bullseye"></span>
+							<span class="metric-number">0.9375</span>
+							<h3>Recall</h3>
+						</section>
+						<section>
+							<span class="icon solid style2 major fa-star"></span>
+							<span class="metric-number">0.8571</span>
+							<h3>F1 Score</h3>
+						</section>
+						<section>
+							<span class="icon solid style2 major fa-database"></span>
+							<span class="metric-number">10,558</span>
+							<h3>Records processed</h3>
+						</section>
+					</div>
+				</div>
+			</section>
+
+			<!-- ── Spotlight 3: Model ─────────────────────────────────────── -->
+			<section class="spotlight style1 orient-right content-align-left image-position-center onscroll-image-fade-in">
+				<div class="content">
+					<h2>Why threshold 0.35?</h2>
+					<p>
+						The churn class is a 25% minority (80 of 320 customers). At the default threshold of 0.5,
+						a logistic regression tends to under-predict the minority, trading recall for overall accuracy.
+					</p>
+					<p>
+						Lowering the threshold to <strong>0.35</strong> shifts the trade-off:
+						the model flags more customers as at-risk, accepting a few extra false positives
+						in exchange for catching nearly all true churned customers.
+						For a re-engagement campaign, the cost of a missed churned customer (lost revenue)
+						outweighs the cost of a false positive (one extra email sent).
+					</p>
+					<p>
+						At threshold 0.35 on the held-out test set:
+						<strong>15 of 16 churned customers correctly identified</strong>,
+						4 active customers flagged as false positives.
+					</p>
+				</div>
+				<div class="image">
+					<img src="images/confusion_matrix.png" alt="Confusion matrix" />
+				</div>
+			</section>
+
+			<!-- ── Spotlight 4: Technical decisions ──────────────────────── -->
+			<section class="spotlight style1 orient-left content-align-left image-position-center onscroll-image-fade-in">
+				<div class="content">
+					<h2>Technical decisions</h2>
+					<h3>Idempotent upserts</h3>
+					<p>
+						<code>load.py</code> queries existing PKs before inserting, separating records into
+						"new" and "update" batches. This makes the pipeline safe to re-run without
+						creating duplicate rows, which matters when the source CSV is regenerated or the pipeline runs in CI.
+					</p>
+					<h3>Schema-first validation</h3>
+					<p>
+						<code>extract.py</code> defines an <code>EXPECTED_SCHEMA</code> dict at the module level
+						and raises a <code>ValueError</code> on any missing column or null in required fields,
+						before any transformation runs.
+						The pipeline fails fast rather than propagating bad data into the warehouse.
+					</p>
+					<h3>Dev / prod environments</h3>
+					<p>
+						The <code>--env</code> CLI flag switches DB path and logging level simultaneously.
+						No environment variables, no config files. One flag, one change.
+					</p>
+					<ul class="actions">
+						<li><a href="https://github.com/floresjorge/simulation-etl-pipeline" target="_blank" class="button primary">View full source on GitHub</a></li>
+					</ul>
+				</div>
+				<div class="image">
+					<img src="images/pic01.png" alt="Code" />
+				</div>
+			</section>
+
+			<!-- ── Footer ─────────────────────────────────────────────────── -->
+			<footer class="wrapper style1 align-center">
+				<div class="inner">
+					<ul class="icons">
+						<li><a href="https://github.com/floresjorge" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+						<li><a href="https://www.linkedin.com/in/jorge-flores-uribe/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+						<li><a href="mailto:flurjor@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+					<p><a href="index.html">← Back to portfolio</a></p>
+				</div>
+			</footer>
+
+		</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+		<script src="Project2/assets/js/main.js"></script>
+
+	</body>
+</html>

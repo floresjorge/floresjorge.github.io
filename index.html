@@ -6,10 +6,78 @@
 -->
 <html>
 	<head>
-		<title>Jorge's Portfolio</title>
+		<title>Jorge Flores-Uribe | Data Scientist & Analytics Engineer</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<style>
+			/* ── Navy theme override ──────────────────────────────────── */
+			#header {
+				background: #1e3a5f !important;
+				color: #c8dff0 !important;
+			}
+			#header h1, #header h2, #header h3,
+			#header h4, #header h5, #header h6 {
+				color: #ffffff !important;
+			}
+			#header > header p,
+			#header header p {
+				color: #a8c8e8 !important;
+			}
+			#header a {
+				color: #c8dff0 !important;
+			}
+			#header a:hover {
+				color: #ffffff !important;
+			}
+			#header > footer .icons li a {
+				color: #90b8d8 !important;
+			}
+			#header > footer .icons li a:hover {
+				color: #ffffff !important;
+			}
+			#header > nav ul li {
+				border-top-color: #27456e !important;
+			}
+			#header > nav ul li a {
+				color: #e8f4ff !important;
+			}
+			#header > nav ul li a.active {
+				background: #ffffff !important;
+				color: #1e3a5f !important;
+			}
+			/* Accent: teal → navy blue */
+			header.major h2 {
+				color: #1e3a5f !important;
+				border-bottom-color: #2c6fad !important;
+			}
+			header.major h2::after {
+				background-color: #2c6fad !important;
+			}
+			header.major h2 + p,
+			header.major h2 ~ p {
+				color: #555 !important;
+			}
+			a:hover {
+				color: #2c6fad !important;
+			}
+			.button.primary {
+				background-color: #2c6fad !important;
+			}
+			.button.primary:hover {
+				background-color: #1a4f80 !important;
+			}
+			input[type="submit"].primary,
+			input[type="button"].primary {
+				background-color: #2c6fad !important;
+			}
+			a:not(.button):not(.icon):not(.social-icon) {
+				color: #2c6fad;
+			}
+			a:not(.button):not(.icon):not(.social-icon):hover {
+				color: #1a4f80;
+			}
+		</style>
 	</head>
 	<body class="is-preload">
 
@@ -18,231 +86,232 @@
 				<header>
 					<span class="image avatar"><img src="images/avatar.png" alt="" /></span>
 					<h1 id="logo"><a href="#">Jorge Flores-Uribe</a></h1>
-					<p>I hold an academic background in Philosophy and Social Sciences, which has equipped me with a strong foundation in critical thinking and a deep understanding of human behavior and societal structures. Complementing this, I am a skilled Data Analyst, proficient in transforming complex datasets into actionable insights.</p>
+					<p>Data Scientist &amp; Analytics Engineer<br />
+					ETL · ML Pipelines · BI</p>
 				</header>
 				<nav id="nav">
 					<ul>
-						<li><a href="#one" class="active">About me</a></li>
+						<li><a href="#one" class="active">About</a></li>
 						<li><a href="#five">Projects</a></li>
 						<li><a href="#two">Education</a></li>
-						<li><a href="#three">Skills and certificactions</a></li>
-						<li><a href="#four">Job experience</a></li>
-						
+						<li><a href="#three">Skills</a></li>
+						<li><a href="#four">Experience</a></li>
 					</ul>
 				</nav>
 				<footer>
 					<ul class="icons">
-						<li><a href="https://github.com/floresjorge" class="icon brands fa-github"><span class="label">Github</span></a></li>
+						<li><a href="https://github.com/floresjorge" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 						<li><a href="mailto:flurjor@gmail.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
-						<li><a href="www.linkedin.com/in/jorge-flores-uribe-787b96186" class="fab fa-linkedin"><span class="label"></span></a></li>
+						<li><a href="https://www.linkedin.com/in/jorge-flores-uribe-787b96186" class="fab fa-linkedin"><span class="label">LinkedIn</span></a></li>
+						<li><a href="assets/resume/Resume.pdf" class="icon solid fa-file-pdf" download title="Download CV"><span class="label">CV</span></a></li>
 					</ul>
 				</footer>
 			</section>
 
 		<!-- Wrapper -->
 			<div id="wrapper">
+				<div id="main">
 
-				<!-- Main -->
-					<div id="main">
-
-						<!-- One -->
-							<section id="one">
-								<div class="image main" data-position="center">
-									<img src="images/banner.png" alt="" />
-								</div>
-								<div class="container">
-									<header class="major">
-										<h2>About me</h2>
-										<p>Data Analyst with an academic background in Philosophy and Social Sciences, providing a strong foundation in critical thinking, analytical reasoning, and understanding of human behavior and societal structures. I have experience in sales operations analysis, organizational analysis, and public policy analysis. </p>
-									</header>
-									<p>You can check my linkedin profile using the following links:</p>
-									<div class="social-icons">
-										<a class="social-icon" href="https://www.linkedin.com/in/jorge-flores-uribe-787b96186/"><i class="fab fa-linkedin"></i></a>
-										<!-- RESUME PDF <a class="social-icon" href="assets/resume/Resume.pdf"><i class="fas fa-file-alt"></i></a> -->
-									</div>
-								</div>
-								
-							</section>
-<!-- Five -->
-<section id="five">
-	<div class="container">
-		
-		<h3>Some Projects</h3>
-		<p>Even though I didn't work on these exact projects in my previous roles, due to privacy and data governance policies, I'm not allowed to distribute any kind of information or data that I was working with. Therefore, I am presenting the following projects using anonymous data or public datasets in order to showcase my expertise and skills.</p>
-		<div class="features">
-			<article>
-				<a href="project2.html"class="image"><img src="images/pic01.png" alt="" /></a>
-				<div class="inner">
-					<h4>From Raw Data to Business Insights: A Sales Analytics Journey</h4>
-					<p>I conducted a sales operations analysis using SQL, Looker Studio, and data visualization to transform raw sales data into actionable insights. I cleaned and structured the data, built a interactive dashboards and provided key business insights.</p>
-				</div>
-				<ul class="actions stacked">
-					<li><a href="project2.html" class="button">Go to project</a></li>
-				</ul>
-			</article>
-			
-			<article>
-				<a href="https://github.com/floresjorge/guadalajara-mobility/tree/main" target="_blank" class="image">
-					<img src="images/pic02.jpg" alt="Bike lanes analysis in Guadalajara" />
-				</a>
-				<div class="inner">
-					<h4>Analysis of Guadalajara's mobility</h4>
-					<p>As part of an interinstitutional infrastructure project, I analyzed the social impact of the existing bike lanes in Guadalajara City.</p>
-				</div>
-				<ul class="actions stacked">
-					<li><a href="https://github.com/floresjorge/guadalajara-mobility/tree/main" class="button">Go to project</a></li>
-				</ul>
-			</article>
-
-			<article>
-				<a href="rental-monitor-gdl/dashboard.html" class="image">
-					<img src="images/1.jpg" alt="Guadalajara Rental Monitor dashboard" />
-				</a>
-				<div class="inner">
-					<h4>Guadalajara Rental Monitor</h4>
-					<p>Python pipeline that collects, normalizes and scores rental listings in Guadalajara Centro. Features an interactive dashboard with card and map views, price history sparklines, pet-policy parsing, and filters for rental requirements (aval, justicia alternativa, depósito). Updated automatically every 12 hours via GitHub Actions.</p>
-				</div>
-				<ul class="actions stacked">
-					<li><a href="rental-monitor-gdl/dashboard.html" class="button">Go to dashboard</a></li>
-				</ul>
-			</article>
-
-						<!-- Two -->
-							<section id="two">
-								<div class="container">
-									<header class="major">
-										<h2>Education</h2>
-										<h3>Bachelor of Arts in Philosophy and Social Sciences.</h3>
-									</header>
-									<div class="flex-shrink-0"><span class="text-primary">Aug 2015 - May 2019</span></div>
-									<p>Instituto Tecnológico y de Estudios Superiores de Occidente (ITESO). Guadalajara, Jalisco, Mexico.</p>
-									<header class="major">
-										<h3>Diploma in Theories of Argumentation. </h3>
-									</header>
-									<div class="flex-shrink-0"><span class="text-primary">Aug 2021 - May 2022</span></div>
-									<p>Universidad Nacional Autónoma de México (UNAM). Remote.</p>
-
-								</div>
-							</section>
-
-						<!-- Three -->
-							<section id="three">
-								<div class="container">
-									<h3>Certifications</h3>
-									<ul>
-										<li>Google Data Analytics.</li>
-										<li>IBM Data Analytics with Python.</li>
-									</ul>
-									<h3>SKILLS</h3>
-									<p>Programming languages & tools.</p>
-									<ul class="feature-icons">
-										<li class="list-inline-item"><i class="fab fa-python"></i> Python</li>
-										<li class="list-inline-item"><i class="fab fa-r-project"></i> R</li>
-										<li class="list-inline-item"><i class="fas fa-database"></i> SQL</li>
-										<li class="list-inline-item"><i class="fas fa-map"></i> QGIS</li>
-										<li class="list-inline-item"><i class="fas fa-chart-line"></i> Tableau / Looker / Grafana</li>
-									</ul>
-								</div>
-								
-							</section>
-							<section id="four">
-								<div class="container">
-									<header class="major">
-										<h2>Job experience</h2>
-									</header>
-									<div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-										<div class="flex-grow-1">
-											
-											<h3>Freelancer Data Analyst. Various Companies</h3>
-											<div class="flex-shrink-0"><span class="text-primary">Dec 2023 - Present</span></div>
-											<ul>
-												<li>
-													Implemented new CRM and POS systems with 100\% adoption rate; standardized data entry and ensured clean migration, standardizing data entry processes.                                </li>
-												<li>
-													Established metrics systems with real-time dashboards using Looker Studio and Google Sheets, providing in-depth sales performance analysis and QA insights for data consistency and reporting.                                </li>
-												<li>
-													Employed Python to clean datasets and upgrade the CRM database, improving data accuracy  to ensure quality standards.                                </li>
-												<li>
-													Worked with Finance,  Customer Services, and Marketing to identify inefficiencies, proposed effective solutions, assisted in developing internal audits and controls to ensure process integrity, and managed multiple projects.                                </li>
-											</ul>
-										</div>
-									<h3>Supervisor. DIF Guadalajara</h3>
-										<div class="flex-shrink-0"><span class="text-primary">Feb 2023 - Dec 2023</span></div>
-										<ul>
-											<li>Prepared monthly compliance reports for government audits, ensuring data accuracy and readiness through
-												meticulous database supervision, data analytics, and visualization, providing actionable insights for director’s
-												office.</li>
-											<li>Development of a Comprehensive Service Dashboard Covering 100% of Users and Services: Designed and
-												implemented a centralized dashboard for the agency, offering real-time visualization and a complete overview
-												of services and Users.</li>	
-											<li>Conducted data acquisition and analysis of vulnerable populations within the municipality, comparing institu-
-												tional services to evaluate the impact of social programs and support the design of new initiatives, ensuring
-												strict adherence to data governance policies.</li>	
-										</ul>
-									<h3>Data Analyst. IIEJ</h3>
-									<div class="flex-shrink-0"><span class="text-primary">Oct 2022 - Jan 2023</span></div>
-
-										<ul>
-											<li>Developed and programmed an automated system to generate detailed reports evaluating the impact of public
-												policies on violence in Jalisco state, streamlining data analysis.</li>
-											<li>Participated in comprehensive assessments of outcomes, ensuring strict adherence to state-mandated standards
-												and evaluating the effectiveness of national programs addressing violence prevention in Jalisco.</li>	
-										</ul>
-									<h3>Operative Manager & Consultant. DogDog</h3>
-									<div class="flex-shrink-0"><span class="text-primary">Mar 2022 - Nov 2022</span></div>
-										<ul>
-											<li>Reduced employee turnover by 80%: Implemented strategies resulting in a significant decrease in staff turnover,
-												fostering a more stable and productive work environment.</li>
-											<li>Implemented an automated system for the systematic tracking and reporting of Key Performance Indicators
-												(KPIs). This streamlined process ensures timely access to accurate data, enabling data-driven decision making
-												and improved goal alignment across the organization.</li>
-											<li>Streamlined training processes: Developed and implemented systematic training procedures, enhancing effici-
-												ency and ensuring consistent employee development across departments.</li>
-										</ul>
-								</div>
-							</section>
-						
-										<!-- pending projects:									
-										<article>
-											<a href="#" class="image"><img src="images/pic03.jpg" alt="" /></a>
-											<div class="inner">
-												<h4>Have I really listened to this band the most?</h4>
-												<p> An analysis of my songs listened in Spotify.</p>
-											</div>
-										</article>
-									</div>
-									-->
-								</div>
-							</section>
-										<!-- contact
-
-							</section>
-							<section id="six">
-								<div class="container">
-									<h3>Contact Me</h3>
-									<p>If you have any questions, please do not hesitate to contact me.</p>
-									<form method="post" action="#">
-										<div class="row gtr-uniform">
-											<div class="col-6 col-12-xsmall"><input type="text" name="name" id="name" placeholder="Name" /></div>
-											<div class="col-6 col-12-xsmall"><input type="email" name="email" id="email" placeholder="Email" /></div>
-											<div class="col-12"><input type="text" name="subject" id="subject" placeholder="Subject" /></div>
-											<div class="col-12"><textarea name="message" id="message" placeholder="Message" rows="6"></textarea></div>
-											<div class="col-12">
-												<ul class="actions">
-													<li><input type="submit" class="primary" value="Send Message" /></li>
-													<li><input type="reset" value="Reset Form" /></li>
-												</ul>
-											</div>
-										</div>
-									</form>
-								</div>
-								</section>
-								 -->
-				<!-- Footer -->
-					<section id="footer">
+					<!-- About -->
+					<section id="one">
+						<div class="image main" data-position="center">
+							<img src="images/banner-v3.png" alt="" />
+						</div>
 						<div class="container">
+							<header class="major">
+								<h2>About me</h2>
+								<p>Data Scientist &amp; Analytics Engineer</p>
+							</header>
+							<p>5+ years building ETL pipelines, BI dashboards, and ML models across sales operations, government reporting, and commercial analytics. Currently Data Analyst &amp; Automation Specialist at DogDog, where I consolidated 10+ data sources into a unified system, built 5 automated Looker Studio dashboards used daily by four teams, and reduced the financial reporting cycle from 2 weeks to 2 days. Pursuing an M.S. in Data Science at INFOTEC (exp. 2027).</p>
+							<p>I work across the full data stack: extraction and schema validation, SQL warehousing, feature engineering, customer segmentation, and model training. I also connect operational tools (CRM, WhatsApp API, Meta Business) into automated workflows that run without manual intervention.</p>
+							<div class="social-icons">
+								<a class="social-icon" href="https://www.linkedin.com/in/jorge-flores-uribe-787b96186/"><i class="fab fa-linkedin"></i> LinkedIn</a>
+							</div>
+							<ul class="actions" style="margin-top:1.2em">
+								<li><a href="assets/resume/Resume.pdf" class="button" download>Download CV (PDF)</a></li>
+							</ul>
 						</div>
 					</section>
+
+					<!-- Projects -->
+					<section id="five">
+						<div class="container">
+							<h3>Projects</h3>
+							<div class="features">
+
+								<article>
+									<a href="simulation-project.html" class="image"><img src="images/project-etl.png" alt="Simulation ETL pipeline" /></a>
+									<div class="inner">
+										<h4>Simulation ETL &amp; Churn Pipeline</h4>
+										<p><strong>Python · pandas · scikit-learn · SQLAlchemy · SQLite</strong></p>
+										<p>Python pipeline that extracts AppSheet POS data, validates schema, engineers customer features, and loads to SQLite. A logistic regression model scores churn risk per customer. Threshold 0.35, ROC-AUC 0.9635, F1 0.8571.</p>
+									</div>
+									<ul class="actions stacked">
+										<li><a href="simulation-project.html" class="button">View project page</a></li>
+										<li><a href="https://github.com/floresjorge/simulation-etl-pipeline" target="_blank" class="button">GitHub</a></li>
+									</ul>
+								</article>
+
+								<article>
+									<div class="image"><img src="images/project-nivele.png" alt="NivELE CEFR classification" /></div>
+									<div class="inner">
+										<h4>NivELE 2026: CEFR Classification (IberLEF Shared Task)</h4>
+										<p><strong>Python · HuggingFace · XLM-RoBERTa · scikit-learn</strong></p>
+										<p><strong>4th place</strong> (of 12 teams) in the NivELE 2026 shared task at IberLEF. Two-stage ensemble: fine-tuned XLM-RoBERTa for contextual embeddings + LinearSVC classifier for CEFR-level prediction (A1–C2) of Spanish learner texts.</p>
+									</div>
+								</article>
+
+								<article>
+									<div class="image"><img src="images/project-tsp.png" alt="TSP bi-objective optimization" /></div>
+									<div class="inner">
+										<h4>TSP Bi-objective Optimization</h4>
+										<p><strong>Python · DEAP · numpy · matplotlib</strong></p>
+										<p>NSGA-II and Genetic Algorithm on the TSPLIB kroAB50 benchmark. Compares Pareto front quality across both approaches with hypervolume indicator computation and publication-quality convergence analysis.</p>
+									</div>
+								</article>
+
+								<article>
+									<a href="rental-monitor-gdl/dashboard.html" class="image"><img src="images/project-rental.png" alt="Guadalajara Rental Monitor" /></a>
+									<div class="inner">
+										<h4>Guadalajara Rental Monitor</h4>
+										<p><strong>Python · GitHub Actions · HTML/JS</strong></p>
+										<p>Pipeline that collects, normalizes, and scores rental listings in Guadalajara Centro. Interactive dashboard with map view, price history sparklines, and pet/deposit filters. Auto-updated every 12 hours via GitHub Actions.</p>
+									</div>
+									<ul class="actions stacked">
+										<li><a href="rental-monitor-gdl/dashboard.html" class="button">Go to dashboard</a></li>
+									</ul>
+								</article>
+
+								<article>
+									<a href="project2.html" class="image"><img src="images/project-sales.png" alt="Sales analytics" /></a>
+									<div class="inner">
+										<h4>Sales Analytics: Raw Data to Business Insights</h4>
+										<p><strong>SQL · Looker Studio · Python</strong></p>
+										<p>Sales operations analysis using SQL and Looker Studio. Cleaned and restructured raw transactional data, built interactive dashboards for performance tracking, and identified revenue concentration by product and channel.</p>
+									</div>
+									<ul class="actions stacked">
+										<li><a href="project2.html" class="button">View project</a></li>
+									</ul>
+								</article>
+
+
+							</div>
+						</div>
+					</section>
+
+					<!-- Education -->
+					<section id="two">
+						<div class="container">
+							<header class="major">
+								<h2>Education</h2>
+							</header>
+
+							<h3>M.S. in Data Science and Information <em>(in progress)</em></h3>
+							<div class="flex-shrink-0"><span class="text-primary">Aug 2025 – present · exp. 2027</span></div>
+							<p>Centro de Investigación e Innovación en TIC (INFOTEC). Remote.<br />
+							<em>Focus: Machine Learning, NLP, Statistical Modeling</em></p>
+
+							<h3>B.A. in Philosophy and Social Sciences</h3>
+							<div class="flex-shrink-0"><span class="text-primary">Aug 2015 – May 2019</span></div>
+							<p>Instituto Tecnológico y de Estudios Superiores de Occidente (ITESO). Guadalajara, Mexico.</p>
+						</div>
+					</section>
+
+					<!-- Skills -->
+					<section id="three">
+						<div class="container">
+							<h3>Skills</h3>
+
+							<h4>Programming &amp; data</h4>
+							<ul class="feature-icons">
+								<li class="list-inline-item"><i class="fab fa-python"></i> Python (pandas, numpy, scikit-learn, SQLAlchemy, Folium)</li>
+								<li class="list-inline-item"><i class="fas fa-database"></i> SQL · SQLite</li>
+								<li class="list-inline-item"><i class="fab fa-r-project"></i> R</li>
+								<li class="list-inline-item"><i class="fab fa-git-alt"></i> Git / GitHub</li>
+							</ul>
+
+							<h4>BI &amp; visualization</h4>
+							<ul class="feature-icons">
+								<li class="list-inline-item"><i class="fas fa-chart-line"></i> Looker Studio · Grafana · Tableau</li>
+								<li class="list-inline-item"><i class="fas fa-chart-bar"></i> matplotlib · seaborn</li>
+								<li class="list-inline-item"><i class="fas fa-map"></i> QGIS · Folium</li>
+							</ul>
+
+							<h4>ML / Data Science</h4>
+							<ul>
+								<li>Classification, clustering (K-Means, hierarchical), regression</li>
+								<li>NLP, feature engineering, churn modeling</li>
+								<li>ETL pipeline design, schema validation, automated reporting</li>
+							</ul>
+
+							<h4>CRM &amp; automation</h4>
+							<ul>
+								<li>Zoho CRM, Escala CRM</li>
+								<li>WhatsApp Business API, Meta Business</li>
+								<li>AI/LLM API integrations</li>
+							</ul>
+
+							<h4>Certifications</h4>
+							<ul>
+								<li>Databricks Lakehouse Fundamentals</li>
+								<li>Google Data Analytics Professional Certificate</li>
+								<li>IBM Data Analysis with Python</li>
+							</ul>
+						</div>
+					</section>
+
+					<!-- Experience -->
+					<section id="four">
+						<div class="container">
+							<header class="major">
+								<h2>Experience</h2>
+							</header>
+
+							<h3>Data Analyst &amp; Automation Specialist — DogDog</h3>
+							<div class="flex-shrink-0"><span class="text-primary">Dec 2023 – present · Guadalajara, MX</span></div>
+							<ul>
+								<li>Consolidated 10+ disconnected data sources into a unified system (3,000+ contacts, 10,600+ sales records); designed extraction and transformation logic in Apps Script and Python for automated reporting and downstream ML.</li>
+								<li>Built 5 automated dashboards and 20+ business reports in Looker Studio covering revenue, expenses, pricing impact, promotions, and marketing; used daily by four teams.</li>
+								<li>Reduced financial reporting cycle from 2 weeks to 2 days by restructuring data pipelines and automating reporting workflows.</li>
+								<li>Ran customer clustering on 800 georeferenced records using K-Means (selected after benchmarking multiple algorithms) to map service coverage across Guadalajara's metro area.</li>
+								<li>Connected Zoho, Escala CRM, Google Sheets, Meta Business, and WhatsApp API into automation workflows handling lead follow-up and campaign execution without manual intervention.</li>
+								<li>Deployed an AI agent on WhatsApp for automated responses and dormant lead reactivation; achieved 8% reactivation rate on cold leads and 10–12 purchases per campaign.</li>
+							</ul>
+
+							<h3>Planning, Evaluation &amp; Monitoring Supervisor — Sistema DIF Guadalajara</h3>
+							<div class="flex-shrink-0"><span class="text-primary">Feb 2023 – Dec 2023 · Guadalajara, MX</span></div>
+							<ul>
+								<li>Produced audit-ready compliance reports using SQL and R covering 100% of agency services; implemented systematic data quality checks ensuring government audit readiness.</li>
+								<li>Designed and deployed a centralized service dashboard in Looker Studio and Grafana providing real-time visibility of all programs and users for the director's office.</li>
+								<li>Integrated social program data with QGIS to perform geospatial analysis of vulnerable populations, optimizing resource allocation and supporting new program design.</li>
+							</ul>
+
+							<h3>Evaluator — Instituto de Información Estadística y Geográfica de Jalisco (IIEGJ)</h3>
+							<div class="flex-shrink-0"><span class="text-primary">Oct 2022 – Jan 2023 · Guadalajara, MX</span></div>
+							<ul>
+								<li>Conducted statistical analyses to identify patterns in state-level violence prevention programs; crafted detailed analytical reports for policymakers.</li>
+								<li>Assessed program outcomes against state-mandated standards for national violence prevention initiatives.</li>
+							</ul>
+
+							<h3>Operations Manager — Dog Dog Encaminando a Tu Perro</h3>
+							<div class="flex-shrink-0"><span class="text-primary">Feb 2020 – Nov 2022 · Guadalajara, MX</span></div>
+							<ul>
+								<li>Monitored and managed KPIs across operations, finance, and customer service; produced audit reports and coordinated cross-functional training.</li>
+								<li>Standardized customer service workflows and internal reporting, laying the operational foundation for subsequent data infrastructure buildout.</li>
+							</ul>
+						</div>
+					</section>
+
+				</div>
+
+				<!-- Footer -->
+				<section id="footer">
+					<div class="container">
+						<ul class="copyright">
+							<li>Jorge Flores-Uribe</li>
+						</ul>
+					</div>
+				</section>
 
 			</div>
 
