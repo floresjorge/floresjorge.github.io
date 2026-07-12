@@ -1,5 +1,5 @@
 {
-  "fecha_actualizacion": "2026-07-11T18:55:42.905012+00:00",
+  "fecha_actualizacion": "2026-07-12T08:10:14.828993+00:00",
   "total_anuncios": 24,
   "anuncios_filtrados": 0,
   "fuentes_utilizadas": [
@@ -8,7 +8,7 @@
   ],
   "zona_objetivo": "Guadalajara Centro",
   "precio_maximo": 20000,
-  "tiempo_ejecucion_segundos": 0.05,
+  "tiempo_ejecucion_segundos": 0.04,
   "errores": [],
   "advertencias": []
 }
